@@ -1,6 +1,7 @@
 /* Display-referred grading reference and Minecraft Java 26.3 pack compiler. */
 (function(root) {
 'use strict';
+const Curves=typeof module!=='undefined'?require('./curves.js'):root.ShaderCurves;
 const clamp=x=>Math.max(0,Math.min(1,x));
 function level(v,s) {
   v=Math.max(0,(v*2**s.exposure-s.black)/(s.white-s.black));
@@ -10,7 +11,16 @@ function level(v,s) {
   return clamp((Math.pow(clamp(v),1/s.gamma)-.5)*s.contrast+.5);
 }
 function pixel(r,g,b,x,y,s,amount) {
-  const src=[r,g,b],rgb=src.map(v=>level(v,s));
+  const src=[r,g,b];
+  return finishPixel(src,Curves.apply(Curves.prepare(s.curves),src.map(v=>level(v,s))),x,y,s,amount);
+}
+// Exact 8-bit input table: avoid evaluating cubic curves half a million times per gesture.
+function prepareImageGrade(s) {
+  const curves=Curves.prepare(s.curves);
+  const tables=['red','green','blue'].map(channel=>Array.from({length:256},(_,v)=>Curves.evaluate(curves[channel],Curves.evaluate(curves.master,level(v/255,s)))));
+  return (r,g,b,x,y,amount)=>finishPixel([r/255,g/255,b/255],[tables[0][r],tables[1][g],tables[2][b]],x,y,s,amount);
+}
+function finishPixel(src,rgb,x,y,s,amount) {
   const l=.2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2];
   const chroma=Math.max(...rgb)-Math.min(...rgb);
   const saturation=s.saturation*(1+(s.vibrance||0)*(1-chroma));
@@ -25,6 +35,7 @@ function fragment(s) {
 uniform sampler2D InSampler;
 layout(location = 0) in vec2 texCoord;
 layout(location = 0) out vec4 fragColor;
+${Curves.glsl(s.curves)}
 vec3 levels(vec3 c) {
     c = max(vec3(0.0), (c * exp2(${n('exposure')}) - ${n('black')}) / (${n('white')} - ${n('black')}));
     vec3 soft = mix(c, vec3(0.75) + 0.25 * (1.0 - exp(-(c - 0.75) / 0.25)), greaterThan(c, vec3(0.75)));
@@ -34,6 +45,7 @@ vec3 levels(vec3 c) {
 void main() {
     vec4 source = texture(InSampler, texCoord);
     vec3 c = levels(source.rgb);
+    c = vec3(curve_red(curve_master(c.r)), curve_green(curve_master(c.g)), curve_blue(curve_master(c.b)));
     float luma = dot(c, vec3(0.2126, 0.7152, 0.0722));
     float chroma = max(max(c.r,c.g),c.b) - min(min(c.r,c.g),c.b);
     float sat = ${n('saturation')} * (1.0 + ${n('vibrance')} * (1.0 - chroma));
@@ -49,6 +61,7 @@ function issues(s) {
   return [s.altitudeEnabled&&'Altitude mask',s.timeEnabled&&'Time mask',s.facingEnabled&&'Facing mask',s.biome.trim()&&'Biome mask',s.pulsePeriod>0&&s.pulseDepth>0&&'Animated pulse'].filter(Boolean);
 }
 function validate(s) {
+  if(s.curves!==undefined)Curves.validate(s.curves);
   const bounds={exposure:[-3,3],black:[0,.95],white:[.05,1],gamma:[.2,3],contrast:[0,2],saturation:[0,2],red:[0,2],green:[0,2],blue:[0,2],vignette:[0,1],opacity:[0,1]};
   for(const [key,[min,max]] of Object.entries(bounds))
     if(!Number.isFinite(s[key])||s[key]<min||s[key]>max)throw Error('Invalid '+key);
@@ -63,7 +76,7 @@ function pack(s,mode='always') {
   const pass=(shader,input,output,uniforms)=>({vertex_shader:'minecraft:core/screenquad',fragment_shader:shader,inputs:[{sampler_name:'In',target:input}],output,...(uniforms?{uniforms}:{})});
   const effect={targets:{swap:{}},passes:[pass('shader_maker:post/grade','minecraft:main','swap'),pass('minecraft:post/blit','swap','minecraft:main',{BlitConfig:[{name:'ColorModulate',type:'vec4',value:[1,1,1,1]}]})]};
   const path=mode==='always'?'minecraft/post_effect/end_of_frame.json':'shader_maker/post_effect/grade.json';
-  return {'pack.mcmeta':JSON.stringify({pack:{description:'Shader Maker · Java 26.3',min_format:[97,1],max_format:[97,1]}},null,2),['assets/'+path]:JSON.stringify(effect,null,2),'assets/shader_maker/shaders/post/grade.fsh':fragment(s),'shader-maker-project.json':JSON.stringify({format:'shader-maker-project',version:2,target:'26.3',state:s},null,2),'README.txt':`Minecraft Java 26.3 only. Pack format 97.1. Experimental: in-game smoke test still required.\nInstall this ZIP in resourcepacks and enable it.\n${mode==='always'?'Applies automatically. Disable the pack to remove it. Overrides other end_of_frame effects; pack priority decides.':'Activate: /posteffect add @s shader_maker:grade\nRemove: /posteffect remove @s shader_maker:grade\nCommands require permission.'}\nFull-screen color grading only; no lighting, shadows, depth fog or context conditions.\n`};
+  return {'pack.mcmeta':JSON.stringify({pack:{description:'Shader Maker · Java 26.3',min_format:[97,1],max_format:[97,1]}},null,2),['assets/'+path]:JSON.stringify(effect,null,2),'assets/shader_maker/shaders/post/grade.fsh':fragment(s),'shader-maker-project.json':JSON.stringify({format:'shader-maker-project',version:3,target:'26.3',state:s},null,2),'README.txt':`Minecraft Java 26.3 only. Pack format 97.1. Experimental: in-game smoke test still required.\nInstall this ZIP in resourcepacks and enable it.\n${mode==='always'?'Applies automatically. Disable the pack to remove it. Overrides other end_of_frame effects; pack priority decides.':'Activate: /posteffect add @s shader_maker:grade\nRemove: /posteffect remove @s shader_maker:grade\nCommands require permission.'}\nFull-screen color grading only; no lighting, shadows, depth fog or context conditions.\n`};
 }
 // Small dependency-free ZIP writer (STORE). UTF-8 names, CRC32, fixed dates for reproducibility.
 function zip(files) {
@@ -79,6 +92,11 @@ function zip(files) {
   let size=central.reduce((a,b)=>a+b.length,0),[end,v]=header(22);v.setUint32(0,0x06054b50,true);v.setUint16(8,central.length/2,true);v.setUint16(10,central.length/2,true);v.setUint32(12,size,true);v.setUint32(16,offset,true);
   let result=new Uint8Array(offset+size+22),at=0;for(const b of [...chunks,...central,end]){result.set(b,at);at+=b.length}return result;
 }
-root.ShaderPipeline={pixel,fragment,pack,zip,issues};
+function histogram(data) {
+  const channels=Array.from({length:3},()=>Array(256).fill(0));let shadows=0,highlights=0,total=0;
+  for(let i=0;i<data.length;i+=4){if(data[i+3]===0)continue;total++;for(let c=0;c<3;c++)channels[c][data[i+c]]++;if(Math.min(data[i],data[i+1],data[i+2])===0)shadows++;if(Math.max(data[i],data[i+1],data[i+2])===255)highlights++}
+  return {channels,shadows,highlights,total};
+}
+root.ShaderPipeline={pixel,prepareImageGrade,fragment,pack,zip,issues,histogram};
 if(typeof module!=='undefined')module.exports=root.ShaderPipeline;
 })(globalThis);

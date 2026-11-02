@@ -6,7 +6,7 @@ The target is pinned to resource format 97.1 using `min_format` and `max_format`
 
 ## Supported settings
 
-Exposure, levels, gamma, contrast, saturation, RGB balance, vignette, highlight shoulder, vibrance and opacity. Preview and export use the same display-referred grading formula. Alpha passes through unchanged. Feathered context masks remain preview/reference features; any enabled biome, altitude, facing or time condition, or active pulse, blocks export. A zero-depth pulse has no effect and is permitted.
+Exposure, levels, gamma, contrast, saturation, RGB balance, vignette, highlight shoulder, vibrance, master RGB and individual channel curves, and opacity. Cubic curve coefficients are compiled into GLSL; no additional texture input is needed. Preview and export use the same display-referred grading formula. Alpha passes through unchanged. Feathered context masks remain preview/reference features; any enabled biome, altitude, facing or time condition, or active pulse, blocks export. A zero-depth pulse has no effect and is permitted.
 
 ZIPs are reproducible and contain no source image or temporary UI files. Reopening the embedded project reproduces editor settings, not the original screenshot. Export does not modify settings or silently disable unsupported features.
 

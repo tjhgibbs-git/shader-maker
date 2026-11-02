@@ -29,9 +29,15 @@ public final class Atmosphere {
         }
         public static Grade neutral() { return new Grade(0, 0, 1, 1, 1, 1, 1, 1, 1, 0); }
         public Color apply(Color color, double x, double y, double strength) {
+            return apply(color,x,y,strength,Curves.identity());
+        }
+        /** Curves run after levels/contrast, before saturation, tint and vignette. */
+        public Color apply(Color color, double x, double y, double strength, Curves.Channels curves) {
             if (!finite(x,y,strength)) throw new IllegalArgumentException("Invalid sample coordinates or strength");
             double amount = clamp(strength);
-            double r = level(color.r), g = level(color.g), b = level(color.b);
+            double r = curves.red().sample(curves.master().sample(level(color.r)));
+            double g = curves.green().sample(curves.master().sample(level(color.g)));
+            double b = curves.blue().sample(curves.master().sample(level(color.b)));
             double luminance = .2126*r + .7152*g + .0722*b;
             double chroma = Math.max(r,Math.max(g,b))-Math.min(r,Math.min(g,b));
             double sat = saturation * (1 + vibrance * (1-chroma));
