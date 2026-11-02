@@ -1,6 +1,8 @@
 # Advanced grading: in-game validation handoff
 
-The layer editor and specimen are experimental. Enabled layers are intentionally limited to the synthetic specimen: game preview and static pack export reject them. Fog and live world-aware grading are not implemented. See `world-context-spike.md` and `fog-rendering-spike.md` for rendering investigation and prerequisites.
+**Current-screen checks, with historical notes below.** The target workspace is defined in [the vanilla resource pack spec](vanilla-only-handoff.md): a visible ordered stack, condition/weight feedback and an inspector. Apply and Export must share vanilla resources; a separate live mod renderer is not planned.
+
+The layer editor and specimen are experimental. Enabled layers currently affect only the CPU sample: game preview and static pack export reject them. Fog and live world-aware grading are not implemented. These are current implementation gaps; see [vanilla feasibility](vanilla-feasibility.md) for engine inputs and pending clean-client probes.
 
 Run the normal Gradle build and test in an actual Minecraft 26.3 client on a graphics-capable system. The offline verifier compiles client code and checks model/export behavior, but does not exercise screen layout, mouse/keyboard interaction or game rendering.
 
@@ -18,9 +20,9 @@ Run the normal Gradle build and test in an actual Minecraft 26.3 client on a gra
 
 Project names are normalized to file names and saving replaces an existing file with the same normalized name; different entered names can collide. Consider a collision-aware save flow. Name editing in the layer list has an explicit Save action; evaluate whether that is discoverable and whether unsaved changes need a prompt. Inspect sample context labels and layer feedback at the minimum size and adapt the layout if needed.
 
-Graphics-device work remains separate: verify world render hooks and writable per-frame parameters before enabling live layers, and verify scene depth, projection, sky and transparency before implementing distance or volumetric fog.
+Graphics-device work must prove exported vanilla resources: camera-Y conditions first, then biome/daylight/weather/lightning input paths and atmosphere. Verify actual stage bindings, scene coverage, depth, projection, sky and transparency without relying on mod-owned per-frame parameters.
 
-Planned work (real sample picture, clock/sync, live renderer, animated pulses) is tracked under "Next actions" in [v0.1-handoff.md](v0.1-handoff.md).
+The current roadmap is [the vanilla resource pack spec](vanilla-only-handoff.md). The dated [v0.1 handoff](v0.1-handoff.md) retains previous UI/device test evidence; later entries supersede the untested-status notes below.
 
 ## Added sample-reference checks
 
