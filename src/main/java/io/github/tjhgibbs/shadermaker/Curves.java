@@ -39,6 +39,19 @@ public final class Curves {
                         3*delta-h[i]*(2*m[i]+m[i+1]),-2*delta+h[i]*(m[i]+m[i+1])};
             }
         }
+        /** Compile the same cubic coefficients used by the CPU sampler. */
+        public String glsl(String name) {
+            StringBuilder out = new StringBuilder("float curve_" + name + "(float x) { x = clamp(x, 0.0, 1.0);\n");
+            for (int i=0; i<coefficients.length; i++) {
+                double[] c = coefficients[i];
+                if (i<coefficients.length-1) out.append("if (x <= ").append(points.get(i+1).input).append(") ");
+                out.append("{ float t = (x - ").append(points.get(i).input).append(") / ")
+                    .append(points.get(i+1).input-points.get(i).input).append("; return clamp(((")
+                    .append(c[3]).append(" * t + ").append(c[2]).append(") * t + ").append(c[1])
+                    .append(") * t + ").append(c[0]).append(", 0.0, 1.0); }\n");
+            }
+            return out.append("}\n").toString();
+        }
         public List<Point> points() { return points; }
         public double sample(double input) {
             if (!Double.isFinite(input)) throw new IllegalArgumentException("Invalid curve input");

@@ -1,0 +1,41 @@
+# Start once from this repo:
+# ../block-scraper/block-scraper start --project-dir . --task runBlockScraper
+# Run with: ../block-scraper/block-scraper run tools/block-scraper-smoke.bs
+# Read every resulting PNG. This script captures evidence; it does not assert visual correctness.
+size 1280x720
+scale 2
+open shader-maker
+shot shots/editor-1280.png
+widgets
+click --text Levels
+shot shots/levels.png
+click --text Balance
+shot shots/balance.png
+click --text Curves
+click --text "Gentle S curve"
+shot shots/curve-preset.png
+click --text Undo
+click --text Redo
+click --text "Edit curves…"
+shot shots/curve-editor.png
+widgets
+click --text Done
+click --text "Save project"
+click --text "Load project"
+shot shots/projects.png
+click --text Done
+click --text "Export ZIP"
+shot shots/export.png
+size 854x480
+scale 2
+open shader-maker
+shot shots/editor-854.png
+size 1920x1080
+scale 4
+open shader-maker
+shot shots/editor-scale4.png
+size 854x480
+scale 4
+shot shots/small-gui-fallback.png
+scale 2
+size 1280x720

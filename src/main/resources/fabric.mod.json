@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "shader_maker",
+  "version": "${version}",
+  "name": "Shader Maker",
+  "description": "Create, preview and export color grades in Minecraft.",
+  "authors": ["tjhgibbs"],
+  "environment": "client",
+  "license": "All-Rights-Reserved",
+  "entrypoints": { "client": ["io.github.tjhgibbs.shadermaker.client.ShaderMakerClient"] },
+  "depends": { "fabricloader": ">=0.20.1", "minecraft": "26.3", "java": ">=25", "fabric-api": "*" }
+}

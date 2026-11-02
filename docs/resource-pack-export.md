@@ -1,6 +1,6 @@
 # Java 26.3 resource-pack export contract
 
-The experimental compiler is `tools/temporary-visual-review/pipeline.js`. It writes ZIP-root metadata, one post-effect definition, the custom fragment, a project snapshot and installation notes. The browser's export button downloads `resources.zip`; a failed capability check creates no download and leaves the project intact.
+The production compiler is `src/main/java/io/github/tjhgibbs/shadermaker/PackCompiler.java`; the earlier browser reference remains in `tools/temporary-visual-review/pipeline.js` until in-game visual review is available. It writes ZIP-root metadata, one post-effect definition, the custom fragment, a project snapshot and installation notes. The mod exports named ZIPs under `.minecraft/shader-maker/exports`; the browser reference downloads `resources.zip`; a failed capability check creates no download and leaves the project intact.
 
 The target is pinned to resource format 97.1 using `min_format` and `max_format`. The activation mode is explicit: automatic `minecraft:end_of_frame`, or namespaced command effect `shader_maker:grade`. These modes must not both run the same grade and double-apply it.
 

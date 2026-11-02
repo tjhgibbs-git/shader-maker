@@ -1,6 +1,7 @@
 package io.github.tjhgibbs.shadermaker;
 
 import java.util.Set;
+import java.util.Map;
 
 /** Version-independent color grading and context blending for the editor and renderer. */
 public final class Atmosphere {
@@ -97,6 +98,19 @@ public final class Atmosphere {
             if (position > span) return 0;
             return feather == 0 ? 1 : smooth(Math.min(position/feather, (span-position)/feather));
         }
+    }
+    /** Interpolate biome membership across a caller-timed transition using smoothstep.
+     * Duration is selected by the runtime; elapsed <= 0 starts at the old biome. */
+    public static Map<String, Double> biomeTransition(String from, String to, double elapsed, double duration) {
+        if (from == null || to == null || !finite(elapsed, duration) || duration < 0)
+            throw new IllegalArgumentException("Invalid biome transition");
+        if (from.equals(to)) return Map.of(to, 1.0);
+        double t = duration == 0 ? 1 : smooth(elapsed / duration);
+        return Map.of(from, 1-t, to, t);
+    }
+    public static Color blend(Color from, Color to, double weight) {
+        if (!Double.isFinite(weight) || weight < 0 || weight > 1) throw new IllegalArgumentException("Invalid blend weight");
+        return new Color(mix(from.r,to.r,weight),mix(from.g,to.g,weight),mix(from.b,to.b,weight),mix(from.a,to.a,weight));
     }
     private static double mod(double x, double p) { return ((x % p) + p) % p; }
     private static double smooth(double x) { x=clamp(x); return x*x*(3-2*x); }

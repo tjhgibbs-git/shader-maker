@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories { maven { url = 'https://maven.fabricmc.net/' }; mavenCentral(); gradlePluginPortal() }
+    plugins { id 'net.fabricmc.fabric-loom' version "${loom_version}" }
+}
+rootProject.name = 'shader-maker'
+def scraper = file(providers.gradleProperty('blockscraper.dir').getOrElse('../block-scraper'))
+if (new File(scraper, 'block-scraper-mod').isDirectory()) {
+    ['block-scraper-core', 'block-scraper-agent', 'block-scraper-mod'].each { name ->
+        include name
+        project(":${name}").projectDir = new File(scraper, name)
+    }
+}
