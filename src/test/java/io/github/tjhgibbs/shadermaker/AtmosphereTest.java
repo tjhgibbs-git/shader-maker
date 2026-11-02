@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class AtmosphereTest {
     private static void near(double actual, double expected) {
-        if (Math.abs(actual-expected)>1e-9) throw new AssertionError(actual + " != " + expected);
+        if (!Double.isFinite(actual) || Math.abs(actual-expected)>1e-9) throw new AssertionError(actual + " != " + expected);
     }
     public static void main(String[] args) {
         var color = new Atmosphere.Color(.2,.4,.8,.3);
@@ -22,6 +22,14 @@ public class AtmosphereTest {
         near(mask.strength(new Atmosphere.Context(0,50,0,"minecraft:desert",0)),0);
         near(mask.strength(new Atmosphere.Context(0,50,0,"minecraft:plains",2)),0);
         near(new Atmosphere.Range(0,100,10).weight(5),.5);
+        var soft = new Atmosphere.Grade(1,0,1,1,1,1,1,1,1,0,1,0);
+        if (!(soft.apply(new Atmosphere.Color(.8,.8,.8,1),0,0,1).r()
+                < soft.apply(new Atmosphere.Color(.9,.9,.9,1),0,0,1).r()))
+            throw new AssertionError("Shoulder must retain bright detail");
+        try { new Atmosphere.Context(Double.NaN,0,0,"minecraft:plains",0); throw new AssertionError(); }
+        catch (IllegalArgumentException expected) { }
+        try { new Atmosphere.Range(0,1,0).weight(Double.NaN); throw new AssertionError(); }
+        catch (IllegalArgumentException expected) { }
         System.out.println("Atmosphere checks passed");
     }
 }
