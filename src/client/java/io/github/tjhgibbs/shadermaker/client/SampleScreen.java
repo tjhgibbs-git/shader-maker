@@ -25,7 +25,7 @@ final class SampleScreen extends Screen {
         super.extractRenderState(g,x,y,d);
         g.text(font,"SAMPLE IMAGE",10,10,0xFF77C9BC);
         g.text(font,font.plainSubstrByWidth(status,width-20),10,140,0xFFD9C993);
-        g.text(font,"Sample context is simulated, including for screenshots.",10,154,0xFF9DB3BD);
+        g.text(font,"Preview inputs are set beside the image in Layers.",10,154,0xFF9DB3BD);
     }
     @Override public void onClose(){minecraft.gui.setScreen(parent);}
     @Override public boolean isPauseScreen(){return false;}

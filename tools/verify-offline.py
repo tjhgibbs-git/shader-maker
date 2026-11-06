@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +27,7 @@ minecraft = cache / "fabric-loom/26.3/minecraft-merged.jar"
 if not minecraft.is_file():
     raise SystemExit("No cached Minecraft 26.3 merged JAR. Run ./gradlew build with network access first.")
 jars = sorted((cache / "modules-2/files-2.1").rglob("*.jar")) + [minecraft]
-classpath = os.pathsep.join(map(str, jars))
+classpath = os.pathsep.join(map(str, jars + [ROOT / "src/main/resources"]))
 build = ROOT / "build/offline"
 classes = build / "classes"
 if classes.exists():
@@ -38,13 +39,33 @@ argfile = build / "compile.args"
 # Java argfiles need quoting for cache paths containing spaces.
 argfile.write_text("\n".join(json.dumps(a) for a in args))
 subprocess.run([executable("javac"), "@" + str(argfile)], check=True)
-for test in ["AtmosphereTest", "CurvesTest", "ProjectTest", "MinecraftContractTest"]:
+for test in ["AtmosphereTest", "CurvesTest", "ProjectTest", "FogTest", "WorldSignalsTest", "CommandLayersTest", "MinecraftContractTest"]:
     subprocess.run([executable("java"), "--enable-native-access=ALL-UNNAMED", "-cp", str(classes) + os.pathsep + classpath,
                     "io.github.tjhgibbs.shadermaker." + test], check=True)
 subprocess.run([executable("java"), "--enable-native-access=ALL-UNNAMED", "-cp", str(classes) + os.pathsep + classpath,
                 "io.github.tjhgibbs.shadermaker.client.WorldContextTest"], check=True)
 subprocess.run([executable("java"), "-Djava.awt.headless=true", "-cp", str(classes) + os.pathsep + classpath,
                 "io.github.tjhgibbs.shadermaker.client.SampleImageTest"], check=True)
+# Optional actual raster smoke on systems with Mesa EGL (no Minecraft window required).
+if any(flag in sys.argv for flag in ["--visual-gl", "--fog-gl", "--context-gl"]):
+    fixtures = build / "visual-biomes"
+    subprocess.run([executable("java"), "--source", "25", "-cp", str(classes) + os.pathsep + classpath,
+                    str(ROOT / "tools/VisualBiomeRenderFixtures.java"), str(fixtures)], check=True)
+    if "--context-gl" in sys.argv:
+        context_fixtures=build / "context"
+        subprocess.run([executable("java"), "--source", "25", "-cp", str(classes) + os.pathsep + classpath,
+                        str(ROOT / "tools/WorldSignalRenderFixtures.java"), str(context_fixtures)], check=True)
+        subprocess.run([sys.executable, str(ROOT / "tools/verify-world-signals-gl.py"),
+                        str(cache / "fabric-loom/26.3/minecraft-client.jar"), str(fixtures), str(context_fixtures)], check=True)
+    if "--fog-gl" in sys.argv:
+        fog_fixtures = build / "fog"
+        subprocess.run([executable("java"), "--source", "25", "-cp", str(classes) + os.pathsep + classpath,
+                        str(ROOT / "tools/FogRenderFixtures.java"), str(fog_fixtures)], check=True)
+        subprocess.run([sys.executable, str(ROOT / "tools/verify-fog-gl.py"),
+                        str(cache / "fabric-loom/26.3/minecraft-client.jar"), str(fixtures), str(fog_fixtures)], check=True)
+    elif "--context-gl" not in sys.argv:
+        subprocess.run([sys.executable, str(ROOT / "tools/verify-visual-biomes-gl.py"),
+                        str(cache / "fabric-loom/26.3/minecraft-client.jar"), str(fixtures)], check=True)
 # Package only production classes, excluding test sources and all dev tooling.
 production = {str(p.relative_to(ROOT / f"src/{source}/java")).removesuffix(".java") for source in ["main", "client"]
               for p in (ROOT / f"src/{source}/java").rglob("*.java")}

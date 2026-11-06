@@ -57,9 +57,38 @@ public final class Atmosphere {
         }
     }
 
-    public record Context(double dayTime, double y, double yaw, String biome, double seconds) {
-        public Context { if (!finite(dayTime,y,yaw,seconds) || biome == null)
-            throw new IllegalArgumentException("Invalid world context"); }
+    /** Weather is global strength; flash is the visible flash after accessibility settings. */
+    public record Context(double dayTime, double y, double yaw, String biome, double seconds,
+                          double rain, double thunder, double flash, WorldSignals.Samples signals,
+                          double x, double z, boolean commands) {
+        /** Source compatibility: horizontal position 0,0 and command layers off. */
+        public Context(double dayTime,double y,double yaw,String biome,double seconds,double rain,double thunder,double flash,WorldSignals.Samples signals) { this(dayTime,y,yaw,biome,seconds,rain,thunder,flash,signals,0,0,false); }
+        public Context(double dayTime,double y,double yaw,String biome,double seconds) { this(dayTime,y,yaw,biome,seconds,0,0,0); }
+        public Context(double dayTime,double y,double yaw,String biome,double seconds,double rain,double thunder,double flash) { this(dayTime,y,yaw,biome,seconds,rain,thunder,flash,WorldSignals.Samples.EMPTY); }
+        public Context { if (!finite(dayTime,y,yaw,seconds,x,z) || biome == null || signals == null)
+            throw new IllegalArgumentException("Invalid world context");
+            if (!finite(rain,thunder,flash) || rain<0 || rain>1 || thunder<0 || thunder>1 || flash<0 || flash>1)
+                throw new IllegalArgumentException("Weather and flash strengths must be 0–1");
+        }
+    }
+
+    /** Independent global rain and thunder ranges. This does not mean precipitation at the camera. */
+    public record Weather(Range rain, Range thunder) {
+        public Weather { unitRange(rain); unitRange(thunder); }
+        public double weight(Context c) { return unitWeight(rain,c.rain()) * unitWeight(thunder,c.thunder()); }
+    }
+    /** Domain endpoints 0/1 are not exclusion edges: full rain/flash must stay active at one. */
+    public static double unitWeight(Range range,double value) {
+        if(value<range.min()||value>range.max())return 0;
+        if(range.feather()==0)return 1;
+        double edge=1;
+        if(range.min()>0)edge=Math.min(edge,(value-range.min())/range.feather());
+        if(range.max()<1)edge=Math.min(edge,(range.max()-value)/range.feather());
+        return smooth(edge);
+    }
+    public static void unitRange(Range range) {
+        if (range==null || range.min()<0 || range.max()>1 || range.feather()>1)
+            throw new IllegalArgumentException("Weather / lightning ranges and feather must be 0–1");
     }
 
     /** Optional masks multiply together. Wrapped angles/time are measured in degrees/ticks. */
@@ -113,6 +142,7 @@ public final class Atmosphere {
         return new Color(mix(from.r,to.r,weight),mix(from.g,to.g,weight),mix(from.b,to.b,weight),mix(from.a,to.a,weight));
     }
     private static double mod(double x, double p) { return ((x % p) + p) % p; }
+    public static double smoothUnit(double x) { return smooth(x); }
     private static double smooth(double x) { x=clamp(x); return x*x*(3-2*x); }
     private static double clamp(double x) { return Math.max(0, Math.min(1, x)); }
     private static double mix(double a, double b, double t) { return a+(b-a)*t; }

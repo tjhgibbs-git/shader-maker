@@ -1,0 +1,725 @@
+{
+  "format": "shader-maker-project",
+  "version": 10,
+  "target": "26.3",
+  "state": {
+    "opacity": 1.0,
+    "exposure": 0.0,
+    "contrast": 1.0,
+    "saturation": 1.0,
+    "vibrance": 0.0,
+    "shoulder": 0.0,
+    "vignette": 0.0,
+    "black": 0.0,
+    "white": 1.0,
+    "gamma": 1.0,
+    "red": 1.0,
+    "green": 1.0,
+    "blue": 1.0,
+    "biome": "",
+    "curves": {
+      "master": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "red": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "green": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "blue": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "name": "Desert heat",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.15,
+        "contrast": 1.12,
+        "saturation": 1.0,
+        "vibrance": 0.25,
+        "shoulder": 0.0,
+        "vignette": 0.0,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.12,
+        "green": 1.0,
+        "blue": 0.82,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 2.0
+    },
+    {
+      "name": "Frozen",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.1,
+        "contrast": 0.92,
+        "saturation": 0.55,
+        "vibrance": 0.0,
+        "shoulder": 0.0,
+        "vignette": 0.0,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 0.86,
+        "green": 1.0,
+        "blue": 1.2,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 2.0
+    },
+    {
+      "name": "Lush",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.0,
+        "contrast": 1.05,
+        "saturation": 1.0,
+        "vibrance": 0.6,
+        "shoulder": 0.0,
+        "vignette": 0.0,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.0,
+        "green": 1.08,
+        "blue": 1.0,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 2.0
+    },
+    {
+      "name": "Underwater",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.0,
+        "contrast": 0.9,
+        "saturation": 1.0,
+        "vibrance": 0.0,
+        "shoulder": 0.0,
+        "vignette": 0.45,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 0.7,
+        "green": 1.05,
+        "blue": 1.2,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 0.5
+    },
+    {
+      "name": "Deep dark",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": -0.45,
+        "contrast": 1.0,
+        "saturation": 0.4,
+        "vibrance": 0.0,
+        "shoulder": 0.0,
+        "vignette": 0.7,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.0,
+        "green": 1.0,
+        "blue": 1.1,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 3.0
+    },
+    {
+      "name": "Storm",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": -0.25,
+        "contrast": 1.1,
+        "saturation": 0.6,
+        "vibrance": 0.0,
+        "shoulder": 0.0,
+        "vignette": 0.0,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.0,
+        "green": 1.0,
+        "blue": 1.0,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 4.0
+    },
+    {
+      "name": "Village glow",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.12,
+        "contrast": 1.04,
+        "saturation": 1.0,
+        "vibrance": 0.18,
+        "shoulder": 0.65,
+        "vignette": 0.12,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.08,
+        "green": 1.02,
+        "blue": 0.89,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 2.0
+    },
+    {
+      "name": "Danger",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.0,
+        "contrast": 1.0,
+        "saturation": 1.0,
+        "vibrance": 0.0,
+        "shoulder": 0.0,
+        "vignette": 0.85,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.5,
+        "green": 0.65,
+        "blue": 0.65,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 0.3
+    },
+    {
+      "name": "Sepia",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.0,
+        "contrast": 1.0,
+        "saturation": 0.1,
+        "vibrance": 0.0,
+        "shoulder": 0.0,
+        "vignette": 0.35,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.18,
+        "green": 1.0,
+        "blue": 0.72,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true
+    },
+    {
+      "name": "Dream",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.35,
+        "contrast": 0.8,
+        "saturation": 1.0,
+        "vibrance": 0.5,
+        "shoulder": 0.8,
+        "vignette": 0.3,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.0,
+        "green": 1.0,
+        "blue": 1.0,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "command": true,
+      "fadeSeconds": 3.0
+    }
+  ],
+  "fog": []
+}

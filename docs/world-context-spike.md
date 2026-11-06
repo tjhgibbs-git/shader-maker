@@ -16,10 +16,14 @@ Weather and lightning also affect vanilla sky, fog and lightmap paths. Their ava
 
 `WorldContext.capture` snapshots the initialized camera's Y/yaw/biome, dimension ID and raw default clock modulo 24000. It returns no context without a camera in the current level. Biome can be absent for an unavailable chunk/registry entry; time can be absent without a default clock. This Java snapshot is for authoring diagnostics and sample setup, never the runtime input source for an exported pack.
 
-`/shadermaker context`, `/shadermaker capabilities` and Context → Use world are implemented. Use world copies a snapshot into the context draft rather than following the world continuously. The historical handoff records singleplayer UI/command tests, including time changes. Those observations do not prove that a GLSL input follows the same clock.
+`/shadermaker context`, `/shadermaker capabilities` remain implemented. The Sample Context screen and its Use world control were removed in the layout comparison revision. Inline preview inputs beside the reference image are simulated; the commands still provide world diagnostics. The historical handoff records singleplayer UI/command tests, including time changes. Those observations do not prove that a GLSL input follows the same clock.
 
 The clock manager can create a clock instance before its first server update; an initial zero cannot yet be distinguished through the inspected public API. Interpolation, custom clocks, dimension changes and multiplayer synchronization remain relevant authoring-snapshot checks.
 
 ## Historical uniform investigation
 
 The earlier investigation correctly found that JSON custom uniform buffers are allocated at post-pass construction, have no public per-frame setter and lack writable usage flags. It incorrectly generalized that finding to all conditional output. Engine-owned default Globals updates are a separate path. No writable-buffer mixin, custom mod render pipeline or per-tick pack reload is part of the product roadmap.
+
+## Explicit visual groups
+
+The production visual-biome path now uses normalized sky-color signatures and an experimental vanilla core-sky/alpha-to-post transport, not `WorldContext` or mod-owned uniforms. The user accepts shared signatures and datapack changes affecting them, with clear UI warnings; no client dependency may be proposed. See the implementation follow-up in [feasibility evidence](vanilla-feasibility.md). It currently requires visible sky; fog-only edits are not directly used by the classifier.

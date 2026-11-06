@@ -16,7 +16,7 @@ final class ShaderMakerCommands {
                 }))
                 .then(literal("capabilities").executes(command -> {
                     command.getSource().sendFeedback(Component.literal(
-                        "Static grading: preview/export. Conditional layers: CPU sample only. Live uniforms, synchronized clock, pulses and depth fog: unavailable/unverified."));
+                        "Vanilla pack output: base grade, ordered layers and camera-height conditions, plus Sky colour conditions with vanilla shortcuts/custom datapack signals (visible sky required), and authored terrain distance/height/box/sphere fog using native fog colour. Exact biome IDs, daylight, rain/thunder and visible flash: standalone export not implemented; existing settings can be saved, reviewed or cleared. Terrain fog: Auto mode only; entities/sky/clouds retain native fog. Animated noise and lit fog are deliberately excluded. Camera-height output requires clean-client graphics validation."));
                     return 1;
                 }))));
     }

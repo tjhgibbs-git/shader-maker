@@ -31,7 +31,7 @@ public class VanillaProbeCheck {
      }
      if(name.endsWith(".fsh")) {
       String shader=includes(new String(z.getInputStream(e).readAllBytes(), java.nio.charset.StandardCharsets.UTF_8),client);
-      var variants=name.contains("/core/")?List.of("","#define MULTIDRAW_TERRAIN\n","#define OIT\n#define OIT_ALPHA_ONLY\n#define OIT_DEPTH_BOUNDS\n#define OIT_COEFF_COUNT 8\n#define OIT_WAVELET_RANK 2\n#define OIT_COEFF_ATTACHMENT_COUNT 2\n"):List.of("");
+      var variants=name.endsWith("/core/terrain.fsh")?List.of("","#define MULTIDRAW_TERRAIN\n","#define OIT\n#define OIT_ALPHA_ONLY\n#define OIT_DEPTH_BOUNDS\n#define OIT_COEFF_COUNT 8\n#define OIT_WAVELET_RANK 2\n#define OIT_COEFF_ATTACHMENT_COUNT 2\n"):List.of("");
       for(String defines:variants) for(boolean depth:List.of(false,true)) {
        String source=shader.replace("#version 330", "#version 330\n"+defines);
        try(var module=(SPIRVModule)method.invoke(null,source,ShaderType.FRAGMENT,depth)) {

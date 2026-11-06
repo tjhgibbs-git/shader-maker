@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -21,11 +20,16 @@ public final class ShaderMakerClient implements ClientModInitializer {
         var category = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("shader_maker","main"));
         var key = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.shader_maker.open",InputConstants.Type.KEYBOARD,InputConstants.KEY_N,category));
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
-            while (key.consumeClick()) mc.setScreenAndShow(new EditorScreen(null));
+            while (key.consumeClick()) {
+                // Only open in a world; the current UI owns its input, including typed N.
+                var screen=mc.gui.screen();
+                if(mc.level!=null && (screen==null || screen instanceof PauseScreen))
+                    mc.setScreenAndShow(new LayerScreen(screen));
+            }
         });
         ScreenEvents.AFTER_INIT.register((mc,screen,width,height) -> {
-            if (screen instanceof TitleScreen || screen instanceof PauseScreen)
-                Screens.getWidgets(screen).add(Button.builder(Component.literal("Shader Maker"),b -> mc.setScreenAndShow(new EditorScreen(screen)))
+            if (mc.level!=null && screen instanceof PauseScreen)
+                Screens.getWidgets(screen).add(Button.builder(Component.literal("Shader Maker"),b -> mc.setScreenAndShow(new LayerScreen(screen)))
                     .bounds(6,6,106,20).build());
         });
     }

@@ -58,3 +58,11 @@ tasks.register('sampleImageTest', JavaExec) {
     mainClass = 'io.github.tjhgibbs.shadermaker.client.SampleImageTest'
 }
 check.dependsOn 'sampleImageTest'
+
+tasks.register('fogTest', JavaExec) { dependsOn testClasses; classpath = sourceSets.test.runtimeClasspath; mainClass = 'io.github.tjhgibbs.shadermaker.FogTest' }
+check.dependsOn 'fogTest'
+
+tasks.register('worldSignalsTest', JavaExec) { dependsOn testClasses; classpath = sourceSets.test.runtimeClasspath; mainClass = 'io.github.tjhgibbs.shadermaker.WorldSignalsTest' }
+check.dependsOn 'worldSignalsTest'
+tasks.register('commandLayersTest', JavaExec) { dependsOn testClasses; classpath = sourceSets.test.runtimeClasspath; mainClass = 'io.github.tjhgibbs.shadermaker.CommandLayersTest' }
+check.dependsOn 'commandLayersTest'

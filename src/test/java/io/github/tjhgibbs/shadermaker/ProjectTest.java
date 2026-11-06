@@ -52,7 +52,7 @@ public final class ProjectTest {
         var nonIdentity=new Curves.Curve(List.of(new Curves.Point(0,.04),new Curves.Point(.3,.25),new Curves.Point(.7,.8),new Curves.Point(1,.97)));
         Project custom=neutral.withCurve(0,nonIdentity).withCurve(2,nonIdentity).with("exposure",.3).with("shoulder",.6);
         check(Project.decode(custom.encode()).encode().equals(custom.encode()),"Curves retained exactly");
-        check(PackCompiler.fragment(custom).contains("curve_green"),"Channel GLSL");
+        check(PackCompiler.fragment(custom).contains("curve_base_green"),"Channel GLSL");
         check(neutral.with("black",.9).with("white",.5).get("white")>.9,"Slider level ordering");
         for(int i=0;i<=100;i++) {
             double v=i/100.;var source=new Atmosphere.Color(v,1-v,.3,.4);
@@ -80,6 +80,16 @@ public final class ProjectTest {
         check(Math.abs(layered.evaluate(source,0,0,ctx,blend).r()-.25)<1e-9,"Biome transition blends");
         check(Math.abs(layered.evaluate(source,0,0,new Atmosphere.Context(22500,5,0,"minecraft:plains",0)).r()-.225)<1e-9,"Altitude and wrapped time feathers multiply");
         rejects(()->PackCompiler.files(layered,PackCompiler.Activation.ALWAYS));
+        check(PackCompiler.issues(layered).size()==2,"Both unresolved input paths diagnosed");
+        check(PackCompiler.issues(layered).get(0).contains(conditional.name()),"Issue names affected layer");
+        var heightLayer=new Project.Layer("Height",neutral.with("exposure",1),true,.5,Set.of(),new Atmosphere.Range(-64,100,10),null);
+        var heightProject=neutral.withLayers(List.of(heightLayer));
+        check(PackCompiler.issues(heightProject).isEmpty(),"Camera Y exports");
+        String heightShader=PackCompiler.fragment(heightProject);
+        check(heightShader.contains("float(CameraBlockPos.y) - CameraOffset.y"),"Signed fractional camera position");
+        check(heightShader.contains("smoothstep(0.0, 1.0"),"Smooth inward feather compiled");
+        check(heightShader.contains("grade_layer0(source.rgb)"),"Layer grades original sample");
+        check(Project.decode(PackCompiler.files(heightProject,PackCompiler.Activation.ALWAYS).get("shader-maker-project.json")).encode().equals(heightProject.encode()),"Conditional output retains source project");
         var disabledLayer = new Project.Layer(neutral.with("exposure",1),false,.5,Set.of("minecraft:plains"),null,null);
         var disabledProject = neutral.withLayers(List.of(disabledLayer));
         var exported = PackCompiler.files(disabledProject,PackCompiler.Activation.ALWAYS);
@@ -97,7 +107,95 @@ public final class ProjectTest {
         History h=new History(neutral);h.commit(custom);h.commit(custom);check(h.undo().encode().equals(neutral.encode()),"Duplicate commits ignored");
         check(h.redo().encode().equals(custom.encode()),"Redo");h.undo();h.commit(Project.preset("Moonlit"));check(!h.canRedo(),"Redo branch discarded");
         for(int i=0;i<130;i++)h.commit(neutral.with("exposure",i%2));int undoCount=0;while(h.canUndo()){h.undo();undoCount++;}check(undoCount==100,"History bounded at 100 edits");
+        environmentalConditions();
+        visualBiomes();
         if(args.length>0){Path path=Path.of(args[0]);Files.createDirectories(path);Files.writeString(path.resolve("project.json"),custom.encode());Files.writeString(path.resolve("grade.fsh"),PackCompiler.fragment(custom));PackCompiler.writeZip(path.resolve("resources.zip"),custom,PackCompiler.Activation.ALWAYS);}
         System.out.println("ProjectTest: "+checks+" checks passed");
     }
+    private static void visualBiomes() {
+        check(VisualBiomes.GROUPS.size()==16,"Pinned visible-sky palette has sixteen groups");
+        var seen=new HashSet<String>();var codes=new HashSet<Integer>();
+        for(var group:VisualBiomes.GROUPS) {
+            check(codes.add(group.code())&&group.code()>0&&group.code()<255,"Transport codes are unique and exclude empty/opaque alpha");
+            check(VisualBiomes.classify(((group.rgb()>>16)&255)/255.0,((group.rgb()>>8)&255)/255.0,(group.rgb()&255)/255.0)==group.code(),"Every stock signature classifies, including grey pale garden");
+            for(String biome:group.biomes())check(seen.add(biome),"Stock biome belongs to one sky signature");
+        }
+        check(VisualBiomes.classify(0,0,0)==0&&VisualBiomes.classify(1,0,0)==0,"Darkness and unknown custom colors suppress detection");
+        var group=VisualBiomes.forBiome("minecraft:plains").orElseThrow();
+        check(group.biomes().contains("minecraft:sunflower_plains"),"Shared members are explicit");
+        check(VisualBiomes.forBiome("minecraft:nether_wastes").isEmpty(),"No implied Nether sky support");
+        var layer=new Project.Layer("Shared sky",Project.preset("Moonlit"),true,.6,Set.of(),new Atmosphere.Range(0,100,0),null,null,null,group.id());
+        var p=Project.neutral().withLayers(List.of(layer));
+        check(p.json().get("version").getAsInt()==6,"Visual semantics explicitly versioned");
+        check(Project.decode(p.encode()).encode().equals(p.encode()),"Visual group roundtrip");
+        check(layer.weight(new Atmosphere.Context(6000,64,0,"minecraft:sunflower_plains",0))==.6,"Preview includes explicitly grouped stock biomes");
+        check(layer.weight(new Atmosphere.Context(6000,64,0,"minecraft:desert",0))==0,"Preview excludes different groups");
+        check(layer.weight(null)==0,"No preview context cannot activate group");
+        check(PackCompiler.issues(p).isEmpty(),"Experimental group is exportable for testing");
+        for(var mode:PackCompiler.Activation.values()) {
+            var files=PackCompiler.files(p,mode);
+            check(files.containsKey("assets/minecraft/shaders/core/sky.fsh")&&files.containsKey("assets/shader_maker/shaders/post/detect_environment.fsh"),"Both activation modes include vanilla sky transport and reduction");
+            check(files.get("README.txt").contains("Datapacks can set the sky colour")&&files.get("README.txt").contains("minecraft:sunflower_plains"),"Output discloses datapack risk and expanded group members");
+            check(Project.decode(files.get("shader-maker-project.json")).encode().equals(p.encode()),"Embedded snapshot retains explicit group");
+        }
+        check(PackCompiler.fragment(p).contains("SkyHeldSampler,ivec2("+VisualBiomes.code(p,group.id())/15+",0)"),"Held detected code actually controls layer weight");
+        check(!PackCompiler.files(Project.neutral(),PackCompiler.Activation.ALWAYS).containsKey("assets/minecraft/shaders/core/sky.fsh"),"Ordinary exports add no sky override");
+        rejects(()->new Project.Layer("Unknown",Project.neutral(),true,1,Set.of(),null,null,null,null,"missing"));
+        rejects(()->new Project.Layer("Ambiguous",Project.neutral(),true,1,Set.of("minecraft:plains"),null,null,null,null,group.id()));
+        var legacy=p.json();legacy.addProperty("version",5);rejects(()->Project.decode(legacy.toString()));
+        var exact=new Project.Layer("Exact legacy",Project.neutral(),true,1,Set.of("minecraft:plains"),null,null);
+        check(Project.decode(Project.neutral().withLayers(List.of(exact)).encode()).layers().getFirst().visualBiomeGroup()==null,"Legacy IDs never silently convert to broader groups");
+    }
+    private static void environmentalConditions() {
+        var all=new Atmosphere.Range(0,1,0);
+        var weather=new Atmosphere.Weather(new Atmosphere.Range(.2,1,.2),new Atmosphere.Range(.4,1,.2));
+        var flash=new Atmosphere.Range(.2,1,.2);
+        var l=new Project.Layer("Storm flash",Project.neutral().with("exposure",1),true,.8,Set.of("minecraft:plains","minecraft:forest"),new Atmosphere.Range(0,100,10),new Atmosphere.CircularRange(18000,6000,24000,1000),weather,flash);
+        var p=Project.neutral().withLayers(List.of(l));
+        var c=new Atmosphere.Context(0,50,0,"minecraft:forest",0,.3,.5,.3);
+        check(Math.abs(l.weight(c)-.1)<1e-10,"AND multiplies weather, flash and strength; biome alternatives use OR");
+        var source=new Atmosphere.Color(.2,.3,.4,.7);
+        var actual=p.evaluate(source,0,0,c);
+        check(Math.abs(actual.r()-.22)<1e-10&&actual.a()==.7,"Weather and flash participate in composition and retain alpha");
+        check(l.weight(new Atmosphere.Context(12000,50,0,"minecraft:forest",0,1,1,1))==0,"Daylight exclusion");
+        check(l.weight(new Atmosphere.Context(0,50,0,"minecraft:desert",0,1,1,1))==0,"Exact biome exclusion");
+        check(l.weight(new Atmosphere.Context(0,-1,0,"minecraft:forest",0,1,1,1))==0,"Height exclusion");
+        check(l.weight(new Atmosphere.Context(0,50,0,"minecraft:forest",0,1,1,0))==0,"No visible flash suppresses flash condition");
+        check(l.weight(new Atmosphere.Context(0,50,0,"minecraft:forest",0,0,0,1))==0,"Clear weather suppresses storm");
+        check(Math.abs(l.weight(new Atmosphere.Context(0,50,0,"minecraft:forest",0,1,1,1))-.8)<1e-10,"Full storm and maximum flash remain active with feathers at domain endpoints");
+        check(Atmosphere.unitWeight(new Atmosphere.Range(0,1,.5),0)==1&&Atmosphere.unitWeight(new Atmosphere.Range(0,1,.5),1)==1,"Unrestricted normalized ranges do not fade away at zero or one");
+        check(l.weight(null)==0,"Missing context never activates environmental conditions");
+        check(Math.abs(p.evaluate(source,0,0,c,Map.of("minecraft:forest",.5)).r()-.21)<1e-10,"Biome transition also multiplies new weather / flash weights");
+        check(p.json().get("version").getAsInt()==5,"New conditions opt into v5");
+        var roundtrip=Project.decode(p.encode());
+        check(roundtrip.encode().equals(p.encode()),"All environmental conditions survive v5 persistence");
+        var history=new History(Project.neutral());history.commit(p);check(history.undo().layers().isEmpty()&&history.redo().equals(p),"Environmental condition history preserves data");
+        check(PackCompiler.issues(p).size()==4,"Every missing runtime input is diagnosed");
+        for(var activation:PackCompiler.Activation.values())rejects(()->PackCompiler.files(p,activation));
+        var hidden=new Project.Layer(l.name(),l.project(),false,l.strength(),l.biomes(),l.altitude(),l.time(),l.weather(),l.lightning());
+        var hiddenProject=Project.neutral().withLayers(List.of(hidden));
+        check(hidden.weight(c)==0,"Hidden environmental layer has no contribution");
+        check(PackCompiler.layerIssues(hidden).size()==4,"Disabled unsupported layers cannot be enabled as exportable");
+        check(PackCompiler.issues(hiddenProject).isEmpty(),"Explicitly disabling preserves settings and repairs export");
+        check(PackCompiler.layerIssues(hidden).stream().allMatch(i->i.contains("Clear this condition or disable this layer.")),"Every unsupported input has an actionable repair");
+        try {
+            Path saved=Files.createTempFile("unavailable-project-", ".json");
+            try {PackCompiler.saveProject(saved,p);check(Project.decode(Files.readString(saved)).encode().equals(p.encode()),"Export limitations never prevent project saving");}
+            finally {Files.deleteIfExists(saved);}
+        } catch(java.io.IOException e) {throw new AssertionError(e);}
+
+        check(Project.decode(PackCompiler.files(hiddenProject,PackCompiler.Activation.ALWAYS).get("shader-maker-project.json")).encode().equals(hiddenProject.encode()),"Disabled conditions remain in exported snapshots");
+        var malformed=p.json();malformed.addProperty("version",4);rejects(()->Project.decode(malformed.toString()));
+        var missing=p.json();missing.getAsJsonArray("layers").get(0).getAsJsonObject().getAsJsonObject("weather").remove("rain");rejects(()->Project.decode(missing.toString()));
+        rejects(()->new Atmosphere.Weather(new Atmosphere.Range(-.1,1,0),all));
+        rejects(()->new Atmosphere.Weather(all,new Atmosphere.Range(0,2,0)));
+        rejects(()->new Atmosphere.Weather(all,new Atmosphere.Range(0,1,2)));
+        rejects(()->new Atmosphere.Context(0,0,0,"minecraft:plains",0,Double.NaN,0,0));
+        rejects(()->new Atmosphere.Context(0,0,0,"minecraft:plains",0,0,-1,0));
+        rejects(()->new Atmosphere.Context(0,0,0,"minecraft:plains",0,0,0,2));
+        rejects(()->new Project.Layer("Invalid flash",Project.neutral(),true,1,Set.of(),null,null,null,new Atmosphere.Range(0,2,0)));
+        check(new Atmosphere.Context(0,0,0,"minecraft:plains",0).flash()==0,"Legacy contexts default to clear weather without a flash");
+        check(Project.neutral().json().get("version").getAsInt()==4,"Existing project schema is unchanged without new conditions");
+    }
+
 }

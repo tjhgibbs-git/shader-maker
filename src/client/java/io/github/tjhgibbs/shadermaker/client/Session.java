@@ -16,15 +16,19 @@ final class Session {
     static History history;
     static int selectedLayer = -1;
     static String sampleBiome = "minecraft:plains";
-    static double sampleY = 64, sampleTime = 6000;
+    static double sampleY = 64, sampleTime = 6000, sampleRain, sampleThunder, sampleFlash, sampleX, sampleZ;
+    /** Preview assumption: command-switched layers are on. Never affects export. */
+    static boolean previewCommands;
+    static WorldSignals.Samples signalSamples=WorldSignals.Samples.EMPTY;
+    static String sampleSource = "Simulated camera Y";
     static Project grade() {
         if (selectedLayer < 0 || selectedLayer >= project.layers().size()) { selectedLayer = -1; return project; }
         return project.layers().get(selectedLayer).project();
     }
     static void editGrade(Project grade) {
-        if (selectedLayer < 0 || selectedLayer >= project.layers().size()) { selectedLayer = -1; edit(grade.withLayers(project.layers())); return; }
+        if (selectedLayer < 0 || selectedLayer >= project.layers().size()) { selectedLayer = -1; edit(grade.withLayers(project.layers()).withFog(project.fog())); return; }
         var layers = new ArrayList<>(project.layers()); var old = layers.get(selectedLayer);
-        layers.set(selectedLayer, new Project.Layer(old.name(),grade,old.enabled(),old.strength(),old.biomes(),old.altitude(),old.time()));
+        layers.set(selectedLayer, old.withGrade(grade));
         edit(project.withLayers(layers));
     }
     static String name = "My look", message = "Choose a preset or start with Neutral.";
@@ -61,8 +65,8 @@ final class Session {
         String before = selectedLayer >= 0 && selectedLayer < project.layers().size() ? project.layers().get(selectedLayer).name() : null;
         project = redo ? history.redo() : history.undo();
         // Keep editing the same layer when it is still there; otherwise fall back to the base and say so.
-        if (before != null && selectedLayer < project.layers().size() && project.layers().get(selectedLayer).name().equals(before)) { saveDraft(); return; }
-        if (selectedLayer >= 0) message = "Undo changed the layer list; now editing the base grade.";
+        if (before != null) for (int i = 0; i < project.layers().size(); i++) if (project.layers().get(i).name().equals(before)) { selectedLayer = i; saveDraft(); return; }
+        if (selectedLayer >= 0) message = "The selected layer no longer exists; the base grade is selected.";
         selectedLayer = -1; saveDraft();
     }
     private static String shownMessage = ""; private static long shownAt;
@@ -116,11 +120,38 @@ final class Session {
             message = "Exported " + path.getFileName();
         } catch (Exception e) { message = "Export failed: " + e.getMessage(); }
     }
+    /** Separate, explicit delivery: helper functions for command layers. */
+    static void exportDatapack() {
+        try {
+            Path path = Minecraft.getInstance().gameDirectory.toPath().resolve("shader-maker/exports").resolve(fileName()+"-datapack.zip");
+            PackCompiler.writeFiles(path,CommandEffects.datapack(project));
+            message = "Exported datapack " + path.getFileName() + ". Put it in <world>/datapacks.";
+        } catch (Exception e) { message = "Datapack export failed: " + e.getMessage(); }
+    }
+    /** Singleplayer only, explicit button: writes the helper datapack into this world and runs /reload. */
+    static void installDatapack() {
+        var mc = Minecraft.getInstance();
+        var server = mc.getSingleplayerServer();
+        if (server == null) { message = "Install needs a singleplayer world. Export the datapack for servers."; return; }
+        try {
+            Path path = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.DATAPACK_DIR).resolve("shader-maker-commands.zip");
+            PackCompiler.writeFiles(path,CommandEffects.datapack(project));
+            if (mc.player != null) mc.player.connection.sendCommand("reload");
+            message = "Installed helper datapack in this world and reloaded. Try /function shader_maker:menu";
+        } catch (Exception e) { message = "Datapack install failed: " + e.getMessage(); }
+    }
+    /** Sends /posteffect for the player; needs cheats. The preview pack must be applied for the effect to exist. */
+    static void command(String command) {
+        var mc = Minecraft.getInstance();
+        if (mc.player == null) { message = "Join a world to try commands."; return; }
+        mc.player.connection.sendCommand(command);
+        message = "Sent /" + command + (active() ? "" : " · Apply to game first, or the effect does not exist yet.");
+    }
     static boolean active() { return Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains(PREVIEW); }
     static void apply(boolean enable) {
         if (busy) return;
-        if (enable && project.layers().stream().anyMatch(Project.Layer::enabled)) {
-            message = "Preview failed: active grade layers require a live renderer.";
+        if (enable && !PackCompiler.issues(project).isEmpty()) {
+            message = "Preview blocked: " + String.join(" ",PackCompiler.issues(project));
             return;
         }
         Minecraft mc = Minecraft.getInstance();
@@ -172,7 +203,11 @@ final class Session {
                     applied=""; message="Game rejected the preview shader. Check the log or Disable."; return;
                 }
                 applied = enable ? snapshot : "";
-                message = enable ? "Grade applied to game. Use Disable to restore." : "Preview disabled.";
+                message = enable ? "Look applied to game. Use Disable to restore." : "Preview disabled.";
+                if (enable) for (var layer : CommandEffects.layers(project)) {
+                    var id = Identifier.parse(CommandEffects.effectId(layer));
+                    if (mc.getShaderManager().getPostChain(id,Set.of(Identifier.withDefaultNamespace("main")))==null) { message = "Game rejected command effect "+id+". Check the log."; break; }
+                }
             }));
         } catch (Exception e) { busy = false; message = "Preview failed: " + e.getMessage(); }
     }

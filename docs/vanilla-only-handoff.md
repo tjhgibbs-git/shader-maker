@@ -1,10 +1,12 @@
 # Shader Maker: vanilla resource pack shader authoring spec
 
-**Authoritative product spec, revised 2026-11-02.** This replaces the live-renderer roadmap in the earlier handoffs. Implementation status is separate from requirements; this revision does not implement conditional export. Engine findings and diagnostic packs are recorded in [vanilla-feasibility.md](vanilla-feasibility.md).
+**Authoritative product spec, revised 2026-11-02; fog/sky implementation follow-up 2026-11-03.** This replaces the live-renderer roadmap in the earlier handoffs. Implementation status is separate from requirements; this revision does not implement conditional export. Engine findings and diagnostic packs are recorded in [vanilla-feasibility.md](vanilla-feasibility.md).
 
 ## Product and deliverable
 
 Shader Maker is a visual tool for building Minecraft Java **26.3 resource pack shaders**. The exported ZIP runs in an unmodified vanilla client. The existing Fabric editor is the authoring application; players using the output need no authoring mod, shader loader, client mixin or background parameter service.
+
+**Non-negotiable user direction:** no client runtime dependency, ever. Do not ask to relax this requirement. See [AGENTS.md](../AGENTS.md).
 
 The intended output includes conditional grading and atmosphere, with biome/environment, altitude, time, weather and lightning behavior where vanilla rendering can supply the inputs. Do not reduce the product to static color grading because a mod renderer would be easier. Investigate vanilla post effects, core shaders, textures and combinations of those paths before declaring a feature unavailable. Core shader overrides remain eligible: they run in vanilla, although Mojang treats their interfaces as unsupported and they require exact-version validation.
 
@@ -19,22 +21,24 @@ Offer two explicit delivery modes: **Resource pack only**, for standalone visual
 - Every enabled effect must be represented faithfully in output. A compiler error names the layer/effect, missing input and current limitation. No silent dropping, condition flattening or automatic disabling.
 - Release claims distinguish source inspection, native compilation and actual clean-client graphics tests. The current implementation remains experimental.
 
+See [the 2026-11-03 handoff](fog-sky-in-game-handoff.md) for the current Fog workspace, explicit/custom Sky colour context and deliberately excluded features. Its implementation evidence supersedes older “not implemented” atmosphere statements below.
+
 ## Current implementation versus required output
 
 | Area | Implemented today | Required direction |
 |---|---|---|
 | Base grade | Exposure, levels, gamma, contrast, saturation, balance, vignette, shoulder, vibrance, curves and opacity export | Preserve controls, neutral identity, alpha and color math |
-| Ordered layers | CPU sample evaluation; all enabled layers block Apply/Export | Compile layers into vanilla shaders, starting with unconditional and camera-Y layers |
-| Y-level | Sample condition; `Globals` camera position confirmed in engine source | Keep; camera Y is `float(CameraBlockPos.y) - CameraOffset.y`. Investigate surface world Y separately |
-| Biomes | Exact-ID sample condition | Keep biome-aware output as a requirement. Prove exact identification or document precisely what environmental classification can and cannot distinguish; no automatic conversion to a tint heuristic |
-| Time of day | Sample clock snapshot | Keep; find a vanilla daylight signal. `GameTime` is elapsed ticks modulo 24000, **not** the daylight clock |
-| Weather | No editor/export feature | Investigate rain/snow, wetness and thunder response using vanilla sky, fog, precipitation and lightmap paths |
-| Lightning | No editor/export feature | Investigate flash response; separate a flash from thunder weather and a visible lightning bolt |
-| Distance/height fog | Not implemented | Keep as atmosphere goals; prove distance/position inputs in vanilla stages |
-| Volumetric atmosphere | Not implemented | Research after distance fog; determine feasible density, illumination and cost from actual vanilla inputs |
+| Ordered layers | CPU evaluation and vanilla shader compilation of unconditional/camera-Y layers; clean-client graphics tests pending | Compile layers into vanilla shaders, starting with unconditional and camera-Y layers |
+| Y-level | Sample condition and compiled `Globals` camera-Y range/feather | Keep; camera Y is `float(CameraBlockPos.y) - CameraOffset.y`. Investigate surface world Y separately |
+| Biomes | Explicit experimental visual sky groups, preserving legacy exact selectors | Shared biome signatures are accepted. Clearly list all known members and warn that datapack sky-color changes, blending, weather, darkness and missing visible sky can change/suppress matches; no claim of exact camera-biome IDs |
+| Time of day | Editable circular condition and simulated daylight input; no export path | Keep; find a vanilla daylight signal. `GameTime` is elapsed ticks modulo 24000, **not** the daylight clock |
+| Weather | Editable global rain/thunder ranges and simulation; no export path | Investigate rain/snow, wetness and thunder response using vanilla sky, fog, precipitation and lightmap paths |
+| Lightning | Editable visible-flash range and simulation; no export path | Investigate flash response; separate a flash from thunder weather and a visible lightning bolt |
+| Distance/height fog | Terrain distance/height/box/sphere integration implemented; native and software-raster checks pass, Minecraft device checks pending | Native fog colour; terrain scope; see [fog/sky handoff](fog-sky-in-game-handoff.md) |
+| Volumetric atmosphere | Analytic terrain density and bounded soft-edge integration implemented | Animated noise parked for a future experimental branch; lit fog/sunbeams deliberately excluded by user scope |
 | Animation/pulses | Legacy active pulses rejected | Investigate elapsed-tick animation, wrap and pause behavior; do not reject all animation because the available timer wraps |
 | Facing/screen masks | Legacy math exists; no facing export | Research core-stage matrices for facing; screen gradients need no world data |
-| Sample images/context | Bundled/synthetic/custom reference; Use world snapshot and diagnostics | Retain authoring aids; match their inputs and formulas to the chosen export path |
+| Reference preview | Bundled/synthetic/custom reference; inline simulated inputs and world diagnostic commands | Retain authoring aids; match their inputs and formulas to the chosen export path |
 
 This matrix is a work plan, not a list of shipping promises. A static first milestone does not close biome, weather, lightning or fog requirements.
 
@@ -61,9 +65,9 @@ Camera-altitude and surface-height masks have different meanings and controls. B
 
 Atmosphere may require a separate ordered effect stage rather than another grade of the original image. Define where fog combines with vanilla fog and grading, which scene elements it affects, and its compositing/alpha rules before implementing it. Do not force those semantics into the grade-layer model.
 
-## Interface: a visible stack first
+## Interface: three comparable composition views
 
-Keep the layer stack as the main interface. A node graph is not required for the current blend model; it becomes useful when the product supports reusable masks, branching and explicit effect routing. Those are functional additions that need their own semantics and export support, not a cosmetic diagram of today's list.
+**User-directed revision:** implement Stack, Graph and Overview switches in the Layers workspace so the user can choose after trying all three. Retain the existing ordered blend semantics in every view. The graph is an automatically arranged, selectable dependency view with original-image grade branches and a running mix chain; it does not introduce arbitrary routing, reusable masks or new blend semantics. See [the comparison notes](layer-workspace-review.md). The separate Sample Context screen is removed; reference inputs live beside the image.
 
 The target workspace has a sample or in-world preview, a persistent stack, and an inspector for the selected item. At smaller sizes these can use tabs without losing selection or scroll position.
 
@@ -71,8 +75,8 @@ The target workspace has a sample or in-world preview, a persistent stack, and a
 - Each row shows enabled state, name, strength, compact condition summary and current evaluated contribution. Allow add, duplicate, delete and drag reorder, plus keyboard move actions. Keep the base grade anchored at the bottom.
 - Selecting a row opens Grade, Conditions and (where applicable) Effect settings. A condition editor shows input value, range and feather, and resulting weight. Explain why a layer currently contributes zero.
 - Provide final/original/selected-layer comparisons and a non-destructive solo preview. Solo must not alter the saved enable flags or exported output.
-- Show whether the sample uses a simulated context or a captured world snapshot. Preview controls include camera Y, daylight, biome/environment, weather and flash state as those inputs are proven. Color-only reference images cannot validate depth or exact biome behavior; use appropriate fixtures for those.
-- Keep research status in authoring diagnostics. Normal controls become available with their export path; do not build a second mod-only effects library. The current sample-only layer screens are transitional implementation debt.
+- Label inline reference inputs as simulated. Camera Y, daylight, biome, global rain/thunder and visible flash are authorable and previewable; their availability in vanilla output is a separate, explicit capability. Color-only reference images cannot validate depth or exact biome behavior; use appropriate fixtures for those.
+- Keep research status in authoring diagnostics. Authoring controls must distinguish image simulation from proven exported behavior; do not build a second mod-only effects library. The comparison workspace also authors time, biome, weather and lightning conditions, as requested by the user. Those settings remain recoverable and explicitly block enabled output until their vanilla paths are established.
 
 For example, the stack could read:
 
@@ -99,7 +103,7 @@ An optional read-only contribution view can show `input → base → layer blend
 
 ## Project compatibility
 
-Preserve existing v1–v4 projects and embedded snapshots. Keep biome IDs, altitude and time conditions while their vanilla paths are investigated. **Do not implement the previous proposal to strip biome fields on import.** Unproven export is not grounds for data loss.
+Preserve existing v1–v5 projects and embedded snapshots. Version 5 stores optional rain/thunder and visible-flash ranges; projects without those settings continue to write version 4. Keep biome IDs, altitude and time conditions while their vanilla paths are investigated. **Do not implement the previous proposal to strip biome fields on import.** Unproven export is not grounds for data loss.
 
 Version the next schema only when implemented semantics require it. Preserve names, order, enabled flags, strengths, curves and range feathers. A migration must not broaden a masked layer into an unconditional grade. If a feature ultimately cannot be reproduced, preserve the original file and present an explicit unresolved item with the affected settings; any user-selected conversion or removal must show its effect before saving. Invalid imports leave the current project intact.
 
@@ -109,9 +113,17 @@ Define a practical layer/pass limit from compiled shader size and measured frame
 
 1. **Vanilla evidence fixtures.** Run the generated probes in a modless 26.3 client on OpenGL and Vulkan. Record backend/GPU/log, camera Y and fractional movement, post versus terrain fog, raw depth, elapsed clock versus `/time` changes, world/HUD ordering and dimension/reload behavior. Extend fixtures for biome colors, daylight, weather and lightning; record ambiguous cases as well as successful ones.
 2. **Exportable stack.** Compile unconditional and camera-Y layers; match CPU range/curve/blend math and test native shader contracts. Keep other projects recoverable while remaining input routes are investigated. Apply and Export use identical resources.
-3. **Biome/time/weather/flash paths.** Prove each signal and scope, including core-stage implementations where necessary. For biome identification, test similar-looking biomes, underground/occluded views, transition blending and custom server biome data. A heuristic is a separately named capability and does not satisfy an exact-ID selector. For weather, test dry biomes, shelter, snow, day/night and dimensions; for flash, compare daytime brightness, lightning, End flashes and the accessibility toggle.
+3. **Biome/time/weather/flash paths.** Prove each signal and scope, including core-stage implementations where necessary. For biome identification, test similar-looking biomes, underground/occluded views, transition blending and custom server biome data. A visual group is a separately named capability; the user explicitly accepts shared signatures with clear member lists and limitations. Existing exact-ID selectors require explicit reviewed conversion. For weather, test dry biomes, shelter, snow, day/night and dimensions; for flash, compare daytime brightness, lightning, End flashes and the accessibility toggle.
 4. **Stack workspace.** Implement the persistent priority view, condition/weight explanations and sample controls alongside the corresponding exportable behavior. Retain history, draft recovery, project library and usable minimum-size layouts.
 5. **Atmosphere.** Prove distance/height fog and effect order, then assess volumetric feasibility and animation with actual vanilla data and measured costs. Check sky, water, translucency, hand, view bob, portal/hurt transforms, resize and reload.
 6. **Release evidence.** Install exported packs with the authoring mod absent. Verify both activation modes, disabling/restoration, pack priority, error recovery, CPU/GPU agreement and performance. Publish only the capabilities/backends actually tested; leave remaining requirements open.
 
 Completion means the exported pack delivers the authored behavior in vanilla. A successful mod preview, shader compilation or a narrowed static-only demo is not completion of the conditional shader product.
+
+## Export authoring correction (2026-11-02)
+
+The user's request to prevent creating unexportable work supersedes the earlier unrestricted preview-condition authoring requirement. New biome/time/weather/flash conditions are unavailable until implemented. Preserve imported values read-only with explicit Clear + Save, allow project saving regardless of compiler capability, and offer Resolve export to inspect each affected layer and reason or explicitly disable that layer. No automatic stripping or unconditional conversion is permitted. The missing runtime paths remain open work; this correction does not establish their feasibility or completion.
+
+## Accepted visual biome semantics
+
+The user explicitly allows biome detection inferred from fog/sky and accepts that datapacks editing those inputs can change or break detection. The warning must appear during authoring, alongside the group selector. Exact biome identity is no longer required for explicitly selected visual groups. The current implementation uses **sky color only**, with a vanilla core sky alpha marker and full-screen reduction; it requires visible matching sky. A lack of signal disables the conditioned contribution. No client runtime, loader or mod may supply data. Native and Mesa raster tests do not establish clean-client compatibility.

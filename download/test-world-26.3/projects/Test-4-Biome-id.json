@@ -1,0 +1,141 @@
+{
+  "format": "shader-maker-project",
+  "version": 9,
+  "target": "26.3",
+  "state": {
+    "opacity": 1.0,
+    "exposure": 0.0,
+    "contrast": 1.0,
+    "saturation": 1.0,
+    "vibrance": 0.0,
+    "shoulder": 0.0,
+    "vignette": 0.0,
+    "black": 0.0,
+    "white": 1.0,
+    "gamma": 1.0,
+    "red": 1.0,
+    "green": 1.0,
+    "blue": 1.0,
+    "biome": "",
+    "curves": {
+      "master": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "red": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "green": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "blue": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "name": "Snowy plains (datapack id)",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.0,
+        "contrast": 1.0,
+        "saturation": 1.0,
+        "vibrance": 0.0,
+        "shoulder": 0.0,
+        "vignette": 0.0,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 1.6,
+        "green": 0.6,
+        "blue": 1.6,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "contextControls": {
+        "blocksOnly": false,
+        "conditions": [
+          {
+            "source": "NIGHT_VISION_COLOR",
+            "rgb": 10262937,
+            "tolerance": 0.006,
+            "hue": false
+          }
+        ]
+      }
+    }
+  ],
+  "fog": []
+}

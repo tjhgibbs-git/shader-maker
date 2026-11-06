@@ -1,0 +1,1971 @@
+{
+  "client_sha256": "4508d006323f24fa02876310c192d739af56516eb259000ac50f0909a68c9a2d",
+  "note": "Explicit data only; inheritance is NOT a unique biome signature. Shader inputs may be further modified.",
+  "biomes": {
+    "badlands": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "bamboo_jungle": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "basalt_deltas": {
+      "fog_color": "#685f70",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "beach": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "birch_forest": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "cherry_grove": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#5db7ef",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "cold_ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "crimson_forest": {
+      "fog_color": "#330303",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "dappled_forest": {
+      "fog_color": "#ccd8e2",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#375154",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "dark_forest": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "deep_cold_ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "deep_dark": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "deep_frozen_ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "deep_lukewarm_ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#041633",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "deep_ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "desert": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "dripstone_caves": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "end_barrens": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "end_highlands": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "end_midlands": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "eroded_badlands": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "flower_forest": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "forest": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "frozen_ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "frozen_peaks": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "frozen_river": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "grove": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "ice_spikes": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "jagged_peaks": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "jungle": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "lukewarm_ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#041633",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "lush_caves": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "mangrove_swamp": {
+      "fog_color": "#c0d8ff",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#4d7a60",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": {
+        "argument": 0.85,
+        "modifier": "multiply"
+      },
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "meadow": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "mushroom_fields": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "nether_wastes": {
+      "fog_color": "#330808",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "old_growth_birch_forest": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "old_growth_pine_taiga": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "old_growth_spruce_taiga": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "pale_garden": {
+      "fog_color": "#817770",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#556980",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "plains": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "river": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "savanna": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "savanna_plateau": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "small_end_islands": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "snowy_beach": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "snowy_plains": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "snowy_slopes": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "snowy_taiga": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "soul_sand_valley": {
+      "fog_color": "#1b4745",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "sparse_jungle": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "stony_peaks": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "stony_shore": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "sulfur_caves": {
+      "fog_color": "#8cb831",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#17543c",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "sunflower_plains": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "swamp": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#232317",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": {
+        "argument": 0.85,
+        "modifier": "multiply"
+      },
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "taiga": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "the_end": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "the_void": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "warm_ocean": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "#041f33",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "warped_forest": {
+      "fog_color": "#1a051a",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "windswept_forest": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "windswept_gravelly_hills": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "windswept_hills": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "windswept_savanna": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    },
+    "wooded_badlands": {
+      "fog_color": "<inherit>",
+      "fog_start_distance": "<inherit>",
+      "fog_end_distance": "<inherit>",
+      "sky_fog_end_distance": "<inherit>",
+      "cloud_fog_end_distance": "<inherit>",
+      "water_fog_color": "<inherit>",
+      "water_fog_start_distance": "<inherit>",
+      "water_fog_end_distance": "<inherit>",
+      "ambient_light_color": "<inherit>",
+      "block_light_tint": "<inherit>",
+      "sky_light_color": "<inherit>",
+      "night_vision_color": "<inherit>"
+    }
+  },
+  "biome_surface_effects": {
+    "badlands": {
+      "foliage_color": "#9e814d",
+      "grass_color": "#90814d",
+      "water_color": "#3f76e4"
+    },
+    "bamboo_jungle": {
+      "water_color": "#3f76e4"
+    },
+    "basalt_deltas": {
+      "water_color": "#3f76e4"
+    },
+    "beach": {
+      "water_color": "#3f76e4"
+    },
+    "birch_forest": {
+      "water_color": "#3f76e4"
+    },
+    "cherry_grove": {
+      "foliage_color": "#b6db61",
+      "grass_color": "#b6db61",
+      "water_color": "#5db7ef"
+    },
+    "cold_ocean": {
+      "water_color": "#3d57d6"
+    },
+    "crimson_forest": {
+      "water_color": "#3f76e4"
+    },
+    "dappled_forest": {
+      "dry_foliage_color": "#8c3a04",
+      "foliage_color": "#e68e30",
+      "grass_color": "#df6827",
+      "water_color": "#375154"
+    },
+    "dark_forest": {
+      "dry_foliage_color": "#7b5334",
+      "grass_color_modifier": "dark_forest",
+      "water_color": "#3f76e4"
+    },
+    "deep_cold_ocean": {
+      "water_color": "#3d57d6"
+    },
+    "deep_dark": {
+      "water_color": "#3f76e4"
+    },
+    "deep_frozen_ocean": {
+      "water_color": "#3938c9"
+    },
+    "deep_lukewarm_ocean": {
+      "water_color": "#45adf2"
+    },
+    "deep_ocean": {
+      "water_color": "#3f76e4"
+    },
+    "desert": {
+      "water_color": "#3f76e4"
+    },
+    "dripstone_caves": {
+      "water_color": "#3f76e4"
+    },
+    "end_barrens": {
+      "water_color": "#3f76e4"
+    },
+    "end_highlands": {
+      "water_color": "#3f76e4"
+    },
+    "end_midlands": {
+      "water_color": "#3f76e4"
+    },
+    "eroded_badlands": {
+      "foliage_color": "#9e814d",
+      "grass_color": "#90814d",
+      "water_color": "#3f76e4"
+    },
+    "flower_forest": {
+      "water_color": "#3f76e4"
+    },
+    "forest": {
+      "water_color": "#3f76e4"
+    },
+    "frozen_ocean": {
+      "water_color": "#3938c9"
+    },
+    "frozen_peaks": {
+      "water_color": "#3f76e4"
+    },
+    "frozen_river": {
+      "water_color": "#3938c9"
+    },
+    "grove": {
+      "water_color": "#3f76e4"
+    },
+    "ice_spikes": {
+      "water_color": "#3f76e4"
+    },
+    "jagged_peaks": {
+      "water_color": "#3f76e4"
+    },
+    "jungle": {
+      "water_color": "#3f76e4"
+    },
+    "lukewarm_ocean": {
+      "water_color": "#45adf2"
+    },
+    "lush_caves": {
+      "water_color": "#3f76e4"
+    },
+    "mangrove_swamp": {
+      "dry_foliage_color": "#7b5334",
+      "foliage_color": "#8db127",
+      "grass_color_modifier": "swamp",
+      "water_color": "#3a7a6a"
+    },
+    "meadow": {
+      "water_color": "#0e4ecf"
+    },
+    "mushroom_fields": {
+      "water_color": "#3f76e4"
+    },
+    "nether_wastes": {
+      "water_color": "#3f76e4"
+    },
+    "ocean": {
+      "water_color": "#3f76e4"
+    },
+    "old_growth_birch_forest": {
+      "water_color": "#3f76e4"
+    },
+    "old_growth_pine_taiga": {
+      "water_color": "#3f76e4"
+    },
+    "old_growth_spruce_taiga": {
+      "water_color": "#3f76e4"
+    },
+    "pale_garden": {
+      "dry_foliage_color": "#a0a69c",
+      "foliage_color": "#878d76",
+      "grass_color": "#778272",
+      "water_color": "#76889d"
+    },
+    "plains": {
+      "water_color": "#3f76e4"
+    },
+    "river": {
+      "water_color": "#3f76e4"
+    },
+    "savanna": {
+      "water_color": "#3f76e4"
+    },
+    "savanna_plateau": {
+      "water_color": "#3f76e4"
+    },
+    "small_end_islands": {
+      "water_color": "#3f76e4"
+    },
+    "snowy_beach": {
+      "water_color": "#3d57d6"
+    },
+    "snowy_plains": {
+      "water_color": "#3f76e4"
+    },
+    "snowy_slopes": {
+      "water_color": "#3f76e4"
+    },
+    "snowy_taiga": {
+      "water_color": "#3d57d6"
+    },
+    "soul_sand_valley": {
+      "water_color": "#3f76e4"
+    },
+    "sparse_jungle": {
+      "water_color": "#3f76e4"
+    },
+    "stony_peaks": {
+      "water_color": "#3f76e4"
+    },
+    "stony_shore": {
+      "water_color": "#3f76e4"
+    },
+    "sulfur_caves": {
+      "grass_color": "#aba64f",
+      "water_color": "#34bf89"
+    },
+    "sunflower_plains": {
+      "water_color": "#3f76e4"
+    },
+    "swamp": {
+      "dry_foliage_color": "#7b5334",
+      "foliage_color": "#6a7039",
+      "grass_color_modifier": "swamp",
+      "water_color": "#617b64"
+    },
+    "taiga": {
+      "water_color": "#3f76e4"
+    },
+    "the_end": {
+      "water_color": "#3f76e4"
+    },
+    "the_void": {
+      "water_color": "#3f76e4"
+    },
+    "warm_ocean": {
+      "water_color": "#43d5ee"
+    },
+    "warped_forest": {
+      "water_color": "#3f76e4"
+    },
+    "windswept_forest": {
+      "water_color": "#3f76e4"
+    },
+    "windswept_gravelly_hills": {
+      "water_color": "#3f76e4"
+    },
+    "windswept_hills": {
+      "water_color": "#3f76e4"
+    },
+    "windswept_savanna": {
+      "water_color": "#3f76e4"
+    },
+    "wooded_badlands": {
+      "foliage_color": "#9e814d",
+      "grass_color": "#90814d",
+      "water_color": "#3f76e4"
+    }
+  },
+  "dimensions": {
+    "overworld": {
+      "minecraft:visual/ambient_light_color": "#0a0a0a",
+      "minecraft:visual/cloud_color": "#ccffffff",
+      "minecraft:visual/cloud_height": 192.33,
+      "minecraft:visual/fog_color": "#c0d8ff",
+      "minecraft:visual/sky_color": "#78a7ff"
+    },
+    "overworld_caves": {
+      "minecraft:visual/ambient_light_color": "#0a0a0a",
+      "minecraft:visual/cloud_color": "#ccffffff",
+      "minecraft:visual/cloud_height": 192.33,
+      "minecraft:visual/fog_color": "#c0d8ff",
+      "minecraft:visual/sky_color": "#78a7ff"
+    },
+    "the_end": {
+      "minecraft:visual/ambient_light_color": "#3f473f",
+      "minecraft:visual/fog_color": "#181318",
+      "minecraft:visual/sky_color": "#000000",
+      "minecraft:visual/sky_light_color": "#ac60cd",
+      "minecraft:visual/sky_light_factor": 0.0
+    },
+    "the_nether": {
+      "minecraft:visual/ambient_light_color": "#302821",
+      "minecraft:visual/default_dripstone_particle": {
+        "type": "minecraft:dripping_dripstone_lava"
+      },
+      "minecraft:visual/fog_end_distance": 96.0,
+      "minecraft:visual/fog_start_distance": 10.0,
+      "minecraft:visual/sky_light_color": "#7a7aff",
+      "minecraft:visual/sky_light_factor": 0.0
+    }
+  },
+  "timelines": {
+    "day": {
+      "clock": "minecraft:overworld",
+      "period_ticks": 24000,
+      "time_markers": {
+        "minecraft:day": {
+          "show_in_commands": true,
+          "ticks": 1000
+        },
+        "minecraft:midnight": {
+          "show_in_commands": true,
+          "ticks": 18000
+        },
+        "minecraft:night": {
+          "show_in_commands": true,
+          "ticks": 13000
+        },
+        "minecraft:noon": {
+          "show_in_commands": true,
+          "ticks": 6000
+        },
+        "minecraft:roll_village_siege": 18000,
+        "minecraft:wake_up_from_sleep": 0
+      },
+      "tracks": {
+        "minecraft:audio/firefly_bush_sounds": {
+          "keyframes": [
+            {
+              "ticks": 12600,
+              "value": true
+            },
+            {
+              "ticks": 23401,
+              "value": false
+            }
+          ],
+          "modifier": "or"
+        },
+        "minecraft:gameplay/bees_stay_in_hive": {
+          "keyframes": [
+            {
+              "ticks": 12542,
+              "value": true
+            },
+            {
+              "ticks": 23460,
+              "value": false
+            }
+          ],
+          "modifier": "or"
+        },
+        "minecraft:gameplay/cat_waking_up_gift_chance": {
+          "ease": "constant",
+          "keyframes": [
+            {
+              "ticks": 362,
+              "value": 0.0
+            },
+            {
+              "ticks": 23667,
+              "value": 0.7
+            }
+          ],
+          "modifier": "maximum"
+        },
+        "minecraft:gameplay/creaking_active": {
+          "keyframes": [
+            {
+              "ticks": 12600,
+              "value": true
+            },
+            {
+              "ticks": 23401,
+              "value": false
+            }
+          ],
+          "modifier": "or"
+        },
+        "minecraft:gameplay/eyeblossom_open": {
+          "keyframes": [
+            {
+              "ticks": 12600,
+              "value": true
+            },
+            {
+              "ticks": 23401,
+              "value": false
+            }
+          ]
+        },
+        "minecraft:gameplay/monsters_burn": {
+          "keyframes": [
+            {
+              "ticks": 12542,
+              "value": false
+            },
+            {
+              "ticks": 23460,
+              "value": true
+            }
+          ],
+          "modifier": "or"
+        },
+        "minecraft:gameplay/sky_light_level": {
+          "keyframes": [
+            {
+              "ticks": 133,
+              "value": 1.0
+            },
+            {
+              "ticks": 11867,
+              "value": 1.0
+            },
+            {
+              "ticks": 13670,
+              "value": 0.26666668
+            },
+            {
+              "ticks": 22330,
+              "value": 0.26666668
+            }
+          ],
+          "modifier": "multiply"
+        },
+        "minecraft:gameplay/turtle_egg_hatch_chance": {
+          "ease": "constant",
+          "keyframes": [
+            {
+              "ticks": 21062,
+              "value": 1.0
+            },
+            {
+              "ticks": 21905,
+              "value": 0.002
+            }
+          ],
+          "modifier": "maximum"
+        },
+        "minecraft:visual/cloud_color": {
+          "keyframes": [
+            {
+              "ticks": 133,
+              "value": "#ffffffff"
+            },
+            {
+              "ticks": 11867,
+              "value": "#ffffffff"
+            },
+            {
+              "ticks": 13670,
+              "value": "#ff191926"
+            },
+            {
+              "ticks": 22330,
+              "value": "#ff191926"
+            }
+          ],
+          "modifier": "multiply"
+        },
+        "minecraft:visual/fog_color": {
+          "keyframes": [
+            {
+              "ticks": 133,
+              "value": "#ffffff"
+            },
+            {
+              "ticks": 11867,
+              "value": "#ffffff"
+            },
+            {
+              "ticks": 13670,
+              "value": "#0f0f16"
+            },
+            {
+              "ticks": 22330,
+              "value": "#0f0f16"
+            }
+          ],
+          "modifier": "multiply"
+        },
+        "minecraft:visual/moon_angle": {
+          "ease": {
+            "cubic_bezier": [
+              0.362,
+              0.241,
+              0.638,
+              0.759
+            ]
+          },
+          "keyframes": [
+            {
+              "ticks": 6000,
+              "value": 540.0
+            },
+            {
+              "ticks": 6000,
+              "value": 180.0
+            }
+          ]
+        },
+        "minecraft:visual/sky_color": {
+          "keyframes": [
+            {
+              "ticks": 133,
+              "value": "#ffffff"
+            },
+            {
+              "ticks": 11867,
+              "value": "#ffffff"
+            },
+            {
+              "ticks": 13670,
+              "value": "#000000"
+            },
+            {
+              "ticks": 22330,
+              "value": "#000000"
+            }
+          ],
+          "modifier": "multiply"
+        },
+        "minecraft:visual/sky_light_color": {
+          "keyframes": [
+            {
+              "ticks": 730,
+              "value": "#ffffff"
+            },
+            {
+              "ticks": 11270,
+              "value": "#ffffff"
+            },
+            {
+              "ticks": 13140,
+              "value": "#7a7aff"
+            },
+            {
+              "ticks": 22860,
+              "value": "#7a7aff"
+            }
+          ],
+          "modifier": "multiply"
+        },
+        "minecraft:visual/sky_light_factor": {
+          "keyframes": [
+            {
+              "ticks": 730,
+              "value": 1.0
+            },
+            {
+              "ticks": 11270,
+              "value": 1.0
+            },
+            {
+              "ticks": 13140,
+              "value": 0.24
+            },
+            {
+              "ticks": 22860,
+              "value": 0.24
+            }
+          ],
+          "modifier": "multiply"
+        },
+        "minecraft:visual/star_angle": {
+          "ease": {
+            "cubic_bezier": [
+              0.362,
+              0.241,
+              0.638,
+              0.759
+            ]
+          },
+          "keyframes": [
+            {
+              "ticks": 6000,
+              "value": 360.0
+            },
+            {
+              "ticks": 6000,
+              "value": 0.0
+            }
+          ]
+        },
+        "minecraft:visual/star_brightness": {
+          "keyframes": [
+            {
+              "ticks": 92,
+              "value": 0.037
+            },
+            {
+              "ticks": 627,
+              "value": 0.0
+            },
+            {
+              "ticks": 11373,
+              "value": 0.0
+            },
+            {
+              "ticks": 11732,
+              "value": 0.016
+            },
+            {
+              "ticks": 11959,
+              "value": 0.044
+            },
+            {
+              "ticks": 12399,
+              "value": 0.143
+            },
+            {
+              "ticks": 12729,
+              "value": 0.258
+            },
+            {
+              "ticks": 13228,
+              "value": 0.5
+            },
+            {
+              "ticks": 22772,
+              "value": 0.5
+            },
+            {
+              "ticks": 23032,
+              "value": 0.364
+            },
+            {
+              "ticks": 23356,
+              "value": 0.225
+            },
+            {
+              "ticks": 23758,
+              "value": 0.101
+            }
+          ],
+          "modifier": "maximum"
+        },
+        "minecraft:visual/sun_angle": {
+          "ease": {
+            "cubic_bezier": [
+              0.362,
+              0.241,
+              0.638,
+              0.759
+            ]
+          },
+          "keyframes": [
+            {
+              "ticks": 6000,
+              "value": 360.0
+            },
+            {
+              "ticks": 6000,
+              "value": 0.0
+            }
+          ]
+        },
+        "minecraft:visual/sunrise_sunset_color": {
+          "keyframes": [
+            {
+              "ticks": 71,
+              "value": "#5fefa333"
+            },
+            {
+              "ticks": 310,
+              "value": "#29f5ba33"
+            },
+            {
+              "ticks": 565,
+              "value": "#06fbd433"
+            },
+            {
+              "ticks": 730,
+              "value": "#00ffe533"
+            },
+            {
+              "ticks": 11270,
+              "value": "#00ffe533"
+            },
+            {
+              "ticks": 11397,
+              "value": "#04fcd833"
+            },
+            {
+              "ticks": 11522,
+              "value": "#0ff9cb33"
+            },
+            {
+              "ticks": 11690,
+              "value": "#29f5ba33"
+            },
+            {
+              "ticks": 11929,
+              "value": "#5fefa333"
+            },
+            {
+              "ticks": 12243,
+              "value": "#b1e78733"
+            },
+            {
+              "ticks": 12358,
+              "value": "#cce47e33"
+            },
+            {
+              "ticks": 12512,
+              "value": "#e9e07233"
+            },
+            {
+              "ticks": 12613,
+              "value": "#f6dd6b33"
+            },
+            {
+              "ticks": 12732,
+              "value": "#feda6333"
+            },
+            {
+              "ticks": 12841,
+              "value": "#fed75c33"
+            },
+            {
+              "ticks": 13035,
+              "value": "#ecd25133"
+            },
+            {
+              "ticks": 13252,
+              "value": "#c1cc4733"
+            },
+            {
+              "ticks": 13775,
+              "value": "#36be3733"
+            },
+            {
+              "ticks": 13888,
+              "value": "#1fbb3533"
+            },
+            {
+              "ticks": 14039,
+              "value": "#09b73333"
+            },
+            {
+              "ticks": 14192,
+              "value": "#00b33333"
+            },
+            {
+              "ticks": 21807,
+              "value": "#00b23333"
+            },
+            {
+              "ticks": 21961,
+              "value": "#09b73333"
+            },
+            {
+              "ticks": 22112,
+              "value": "#1fbb3533"
+            },
+            {
+              "ticks": 22225,
+              "value": "#36be3733"
+            },
+            {
+              "ticks": 22748,
+              "value": "#c1cc4733"
+            },
+            {
+              "ticks": 22965,
+              "value": "#ecd25133"
+            },
+            {
+              "ticks": 23159,
+              "value": "#fed75c33"
+            },
+            {
+              "ticks": 23272,
+              "value": "#feda6333"
+            },
+            {
+              "ticks": 23488,
+              "value": "#e9e07233"
+            },
+            {
+              "ticks": 23642,
+              "value": "#cce47e33"
+            },
+            {
+              "ticks": 23757,
+              "value": "#b1e78733"
+            }
+          ]
+        }
+      }
+    },
+    "early_game": {
+      "clock": "minecraft:overworld",
+      "tracks": {
+        "minecraft:gameplay/can_pillager_patrol_spawn": {
+          "keyframes": [
+            {
+              "ticks": 0,
+              "value": false
+            },
+            {
+              "ticks": 120000,
+              "value": true
+            }
+          ],
+          "modifier": "and"
+        }
+      }
+    },
+    "moon": {
+      "clock": "minecraft:overworld",
+      "period_ticks": 192000,
+      "tracks": {
+        "minecraft:gameplay/surface_slime_spawn_chance": {
+          "ease": "constant",
+          "keyframes": [
+            {
+              "ticks": 0,
+              "value": 0.5
+            },
+            {
+              "ticks": 24000,
+              "value": 0.375
+            },
+            {
+              "ticks": 48000,
+              "value": 0.25
+            },
+            {
+              "ticks": 72000,
+              "value": 0.125
+            },
+            {
+              "ticks": 96000,
+              "value": 0.0
+            },
+            {
+              "ticks": 120000,
+              "value": 0.125
+            },
+            {
+              "ticks": 144000,
+              "value": 0.25
+            },
+            {
+              "ticks": 168000,
+              "value": 0.375
+            }
+          ],
+          "modifier": "maximum"
+        },
+        "minecraft:visual/moon_phase": {
+          "keyframes": [
+            {
+              "ticks": 0,
+              "value": "full_moon"
+            },
+            {
+              "ticks": 24000,
+              "value": "waning_gibbous"
+            },
+            {
+              "ticks": 48000,
+              "value": "third_quarter"
+            },
+            {
+              "ticks": 72000,
+              "value": "waning_crescent"
+            },
+            {
+              "ticks": 96000,
+              "value": "new_moon"
+            },
+            {
+              "ticks": 120000,
+              "value": "waxing_crescent"
+            },
+            {
+              "ticks": 144000,
+              "value": "first_quarter"
+            },
+            {
+              "ticks": 168000,
+              "value": "waxing_gibbous"
+            }
+          ]
+        }
+      }
+    },
+    "villager_schedule": {
+      "clock": "minecraft:overworld",
+      "period_ticks": 24000,
+      "tracks": {
+        "minecraft:gameplay/baby_villager_activity": {
+          "keyframes": [
+            {
+              "ticks": 10,
+              "value": "minecraft:idle"
+            },
+            {
+              "ticks": 3000,
+              "value": "minecraft:play"
+            },
+            {
+              "ticks": 6000,
+              "value": "minecraft:idle"
+            },
+            {
+              "ticks": 10000,
+              "value": "minecraft:play"
+            },
+            {
+              "ticks": 12000,
+              "value": "minecraft:rest"
+            }
+          ]
+        },
+        "minecraft:gameplay/villager_activity": {
+          "keyframes": [
+            {
+              "ticks": 10,
+              "value": "minecraft:idle"
+            },
+            {
+              "ticks": 2000,
+              "value": "minecraft:work"
+            },
+            {
+              "ticks": 9000,
+              "value": "minecraft:meet"
+            },
+            {
+              "ticks": 11000,
+              "value": "minecraft:idle"
+            },
+            {
+              "ticks": 12000,
+              "value": "minecraft:rest"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "lightmap_consumers": {
+    "assets/minecraft/shaders/core/block.vsh": [
+      "uniform sampler2D Sampler2;",
+      "vertexColor = Color * sample_lightmap(Sampler2, UV2);"
+    ],
+    "assets/minecraft/shaders/core/entity.vsh": [
+      "uniform sampler2D Sampler2;",
+      "lightMapColor = sample_lightmap(Sampler2, UV2);"
+    ],
+    "assets/minecraft/shaders/core/item.vsh": [
+      "uniform sampler2D Sampler2;",
+      "lightMapColor = sample_lightmap(Sampler2, UV2);"
+    ],
+    "assets/minecraft/shaders/core/particle.vsh": [
+      "uniform sampler2D Sampler2;",
+      "vertexColor = Color * sample_lightmap(Sampler2, UV2);"
+    ],
+    "assets/minecraft/shaders/core/rendertype_leash.vsh": [
+      "uniform sampler2D Sampler2;",
+      "vertexColor = Color * ColorModulator * sample_lightmap(Sampler2, UV2);"
+    ],
+    "assets/minecraft/shaders/core/terrain.vsh": [
+      "uniform sampler2D Sampler2;",
+      "vertexColor = Color * sample_lightmap(Sampler2, UV2);"
+    ],
+    "assets/minecraft/shaders/core/text.vsh": [
+      "uniform sampler2D Sampler2;",
+      "vertexColor = Color * sample_lightmap(Sampler2, UV2);"
+    ]
+  },
+  "explicit_fog_groups": {
+    "<inherit>": [
+      "badlands",
+      "bamboo_jungle",
+      "beach",
+      "birch_forest",
+      "cherry_grove",
+      "cold_ocean",
+      "dark_forest",
+      "deep_cold_ocean",
+      "deep_dark",
+      "deep_frozen_ocean",
+      "deep_lukewarm_ocean",
+      "deep_ocean",
+      "desert",
+      "dripstone_caves",
+      "end_barrens",
+      "end_highlands",
+      "end_midlands",
+      "eroded_badlands",
+      "flower_forest",
+      "forest",
+      "frozen_ocean",
+      "frozen_peaks",
+      "frozen_river",
+      "grove",
+      "ice_spikes",
+      "jagged_peaks",
+      "jungle",
+      "lukewarm_ocean",
+      "lush_caves",
+      "meadow",
+      "mushroom_fields",
+      "ocean",
+      "old_growth_birch_forest",
+      "old_growth_pine_taiga",
+      "old_growth_spruce_taiga",
+      "plains",
+      "river",
+      "savanna",
+      "savanna_plateau",
+      "small_end_islands",
+      "snowy_beach",
+      "snowy_plains",
+      "snowy_slopes",
+      "snowy_taiga",
+      "sparse_jungle",
+      "stony_peaks",
+      "stony_shore",
+      "sunflower_plains",
+      "swamp",
+      "taiga",
+      "the_end",
+      "the_void",
+      "warm_ocean",
+      "windswept_forest",
+      "windswept_gravelly_hills",
+      "windswept_hills",
+      "windswept_savanna",
+      "wooded_badlands"
+    ],
+    "#685f70": [
+      "basalt_deltas"
+    ],
+    "#330303": [
+      "crimson_forest"
+    ],
+    "#ccd8e2": [
+      "dappled_forest"
+    ],
+    "#c0d8ff": [
+      "mangrove_swamp"
+    ],
+    "#330808": [
+      "nether_wastes"
+    ],
+    "#817770": [
+      "pale_garden"
+    ],
+    "#1b4745": [
+      "soul_sand_valley"
+    ],
+    "#8cb831": [
+      "sulfur_caves"
+    ],
+    "#1a051a": [
+      "warped_forest"
+    ]
+  }
+}

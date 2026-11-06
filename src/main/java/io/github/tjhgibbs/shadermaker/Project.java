@@ -3,18 +3,25 @@ package io.github.tjhgibbs.shadermaker;
 import com.google.gson.*;
 import java.util.*;
 
-/** Immutable v4 project, shared by the client, CPU preview and pack compiler. */
-public record Project(Map<String, Double> values, Curves.Channels curves, List<Layer> layers) {
+/** Immutable versioned project, shared by the client, CPU preview and pack compiler. */
+public record Project(Map<String, Double> values, Curves.Channels curves, List<Layer> layers, List<Fog> fog) {
+    public Project(Map<String,Double> values, Curves.Channels curves, List<Layer> layers) { this(values,curves,layers,List.of()); }
     /** The base grade remains unconditional. Layers run in list order over it. */
     public record Layer(String name, boolean enabled, double strength, Map<String, Double> values, Curves.Channels curves,
-                        Set<String> biomes, Atmosphere.Range altitude, Atmosphere.CircularRange time) {
+                        Set<String> biomes, Atmosphere.Range altitude, Atmosphere.CircularRange time,
+                        Atmosphere.Weather weather, Atmosphere.Range lightning, String visualBiomeGroup, WorldSignals.Controls contextControls,
+                        Options options) {
         public Layer {
+            Objects.requireNonNull(options);
             if (name == null || name.isBlank() || name.length() > 64 || name.chars().anyMatch(Character::isISOControl))
                 throw new IllegalArgumentException("Invalid layer name");
             name = name.strip();
+            Objects.requireNonNull(contextControls);
             if (!Double.isFinite(strength) || strength < 0 || strength > 1) throw new IllegalArgumentException("Invalid layer strength");
+            if (lightning!=null) Atmosphere.unitRange(lightning);
             values = Map.copyOf(values);
             validateGrade(values, curves);
+            if(visualBiomeGroup!=null) {VisualBiomes.get(visualBiomeGroup);if(!biomes.isEmpty())throw new IllegalArgumentException("Choose exact IDs or a visual group, not both");}
             biomes = Set.copyOf(biomes);
             for (String biome : biomes) if (!biome.matches("[a-z0-9_.-]+:[a-z0-9/._-]+"))
                 throw new IllegalArgumentException("Invalid biome identifier: " + biome);
@@ -33,7 +40,96 @@ public record Project(Map<String, Double> values, Curves.Channels curves, List<L
                      Set<String> biomes, Atmosphere.Range altitude, Atmosphere.CircularRange time) {
             this("Layer", enabled, strength, values, curves, biomes, altitude, time);
         }
+        /** Source compatibility for v4 grade records. */
+        public Layer(String name,boolean enabled,double strength,Map<String,Double> values,Curves.Channels curves,
+                     Set<String> biomes,Atmosphere.Range altitude,Atmosphere.CircularRange time) {
+            this(name,enabled,strength,values,curves,biomes,altitude,time,null,null);
+        }
+        public Layer(String name,Project grade,boolean enabled,double strength,Set<String> biomes,
+                     Atmosphere.Range altitude,Atmosphere.CircularRange time,Atmosphere.Weather weather,Atmosphere.Range lightning) {
+            this(name,enabled,strength,grade.values(),grade.curves(),biomes,altitude,time,weather,lightning);
+        }
+        public Layer(String name,boolean enabled,double strength,Map<String,Double> values,Curves.Channels curves,
+                     Set<String> biomes,Atmosphere.Range altitude,Atmosphere.CircularRange time,Atmosphere.Weather weather,Atmosphere.Range lightning) {
+            this(name,enabled,strength,values,curves,biomes,altitude,time,weather,lightning,null);
+        }
+        public Layer(String name,Project grade,boolean enabled,double strength,Set<String> biomes,
+                     Atmosphere.Range altitude,Atmosphere.CircularRange time,Atmosphere.Weather weather,Atmosphere.Range lightning,String visualBiomeGroup) {
+            this(name,enabled,strength,grade.values(),grade.curves(),biomes,altitude,time,weather,lightning,visualBiomeGroup);
+        }
+        /** Source compatibility: existing layers retain full-screen scope and no new signals. */
+        public Layer(String name,boolean enabled,double strength,Map<String,Double> values,Curves.Channels curves,
+                     Set<String> biomes,Atmosphere.Range altitude,Atmosphere.CircularRange time,Atmosphere.Weather weather,Atmosphere.Range lightning,String visualBiomeGroup) {
+            this(name,enabled,strength,values,curves,biomes,altitude,time,weather,lightning,visualBiomeGroup,WorldSignals.Controls.NONE);
+        }
+        public Layer(String name,Project grade,boolean enabled,double strength,Set<String> biomes,
+                     Atmosphere.Range altitude,Atmosphere.CircularRange time,Atmosphere.Weather weather,Atmosphere.Range lightning,String visualBiomeGroup,WorldSignals.Controls contextControls) {
+            this(name,enabled,strength,grade.values(),grade.curves(),biomes,altitude,time,weather,lightning,visualBiomeGroup,contextControls);
+        }
+        /** Source compatibility: layers without options are automatic and have no area. */
+        public Layer(String name,boolean enabled,double strength,Map<String,Double> values,Curves.Channels curves,
+                     Set<String> biomes,Atmosphere.Range altitude,Atmosphere.CircularRange time,Atmosphere.Weather weather,Atmosphere.Range lightning,String visualBiomeGroup,WorldSignals.Controls contextControls) {
+            this(name,enabled,strength,values,curves,biomes,altitude,time,weather,lightning,visualBiomeGroup,contextControls,Options.NONE);
+        }
+        public Layer(String name,Project grade,boolean enabled,double strength,Set<String> biomes,
+                     Atmosphere.Range altitude,Atmosphere.CircularRange time,Atmosphere.Weather weather,Atmosphere.Range lightning,String visualBiomeGroup,WorldSignals.Controls contextControls,Options options) {
+            this(name,enabled,strength,grade.values(),grade.curves(),biomes,altitude,time,weather,lightning,visualBiomeGroup,contextControls,options);
+        }
+        public Layer withOptions(Options next){return new Layer(name,enabled,strength,values,curves,biomes,altitude,time,weather,lightning,visualBiomeGroup,contextControls,next);}
+        public Layer withEnabled(boolean next){return new Layer(name,next,strength,values,curves,biomes,altitude,time,weather,lightning,visualBiomeGroup,contextControls,options);}
+        public Layer withName(String next){return new Layer(next,enabled,strength,values,curves,biomes,altitude,time,weather,lightning,visualBiomeGroup,contextControls,options);}
+        public Layer withGrade(Project grade){return new Layer(name,enabled,strength,grade.values(),grade.curves(),biomes,altitude,time,weather,lightning,visualBiomeGroup,contextControls,options);}
+        /** Stable /posteffect identifier path derived from the layer name. */
+        public String commandId(){return Options.slug(name);}
+        public double weight(Atmosphere.Context c) {
+            if(!enabled)return 0;
+            double w=strength;
+            if(!biomes.isEmpty())w*=c!=null&&biomes.contains(c.biome())?1:0;
+            if(visualBiomeGroup!=null)w*=c!=null&&VisualBiomes.previewMatch(visualBiomeGroup,c.biome())?1:0;
+            if(altitude!=null)w*=c==null?0:altitude.weight(c.y());
+            if(time!=null)w*=c==null?0:time.weight(c.dayTime());
+            if(weather!=null)w*=c==null?0:weather.weight(c);
+            if(lightning!=null)w*=c==null?0:Atmosphere.unitWeight(lightning,c.flash());
+            if(contextControls.active())w*=c!=null&&contextControls.matches(c.signals())?1:0;
+            if(options.area()!=null)w*=c==null?0:options.area().weight(c.x(),c.z());
+            if(options.command())w*=c!=null&&c.commands()?1:0;
+            return w;
+        }
         public Project project() { return new Project(values, curves); }
+    }
+    /** Exact horizontal camera box, inclusive, with an inward feather in blocks. */
+    public record Area(double minX, double maxX, double minZ, double maxZ, double feather) {
+        public Area {
+            for(double v:new double[]{minX,maxX,minZ,maxZ,feather})if(!Double.isFinite(v)||Math.abs(v)>3.0e7)throw new IllegalArgumentException("Area values must be finite world coordinates");
+            if(minX>maxX||minZ>maxZ)throw new IllegalArgumentException("Area minimum must not exceed maximum");
+            if(feather<0)throw new IllegalArgumentException("Area feather must not be negative");
+        }
+        public double weight(double x,double z){
+            if(!Double.isFinite(x)||!Double.isFinite(z)||x<minX||x>maxX||z<minZ||z>maxZ)return 0;
+            if(feather==0)return 1;
+            double edge=Math.min(Math.min(x-minX,maxX-x),Math.min(z-minZ,maxZ-z))/feather;
+            return Atmosphere.smoothUnit(edge);
+        }
+        public JsonObject json(){var j=new JsonObject();j.addProperty("minX",minX);j.addProperty("maxX",maxX);j.addProperty("minZ",minZ);j.addProperty("maxZ",maxZ);j.addProperty("feather",feather);return j;}
+        public static Area read(JsonObject j){return new Area(requiredNumber(j,"minX"),requiredNumber(j,"maxX"),requiredNumber(j,"minZ"),requiredNumber(j,"maxZ"),requiredNumber(j,"feather"));}
+    }
+    /**
+     * Layer options added in project v10. {@code command} layers are not part of the always-on chain:
+     * each exports as its own vanilla post effect, switched with /posteffect, fading in over fadeSeconds.
+     */
+    public record Options(Area area, boolean command, double fadeSeconds) {
+        public static final Options NONE=new Options(null,false,1);
+        public Options {
+            if(!Double.isFinite(fadeSeconds)||fadeSeconds<0||fadeSeconds>30)throw new IllegalArgumentException("Fade time must be 0–30 seconds");
+        }
+        public boolean isDefault(){return area==null&&!command&&fadeSeconds==1;}
+        public Options withArea(Area a){return new Options(a,command,fadeSeconds);}
+        public Options withCommand(boolean c){return new Options(area,c,fadeSeconds);}
+        public Options withFade(double f){return new Options(area,command,f);}
+        public static String slug(String name){
+            String s=name.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]+","_").replaceAll("^_+|_+$","");
+            return s.isEmpty()?"layer":s.length()>48?s.substring(0,48):s;
+        }
     }
     public Project(Map<String, Double> values, Curves.Channels curves) { this(values, curves, List.of()); }
     public record Control(String key, String label, double min, double max, double initial) {}
@@ -56,6 +152,7 @@ public record Project(Map<String, Double> values, Curves.Channels curves, List<L
         values = Map.copyOf(values);
         validateGrade(values, curves);
         layers = List.copyOf(layers);
+        fog = List.copyOf(fog);
     }
     private static void validateGrade(Map<String, Double> values, Curves.Channels curves) {
         Objects.requireNonNull(curves);
@@ -77,15 +174,17 @@ public record Project(Map<String, Double> values, Curves.Channels curves, List<L
         if (key.equals("black")) value = Math.min(value, get("white") - .01);
         if (key.equals("white")) value = Math.max(value, get("black") + .01);
         next.put(key, value);
-        return new Project(next, curves, layers);
+        return new Project(next, curves, layers, fog);
     }
-    public Project withCurves(Curves.Channels curves) { return new Project(values, curves, layers); }
+    public Project withCurves(Curves.Channels curves) { return new Project(values, curves, layers, fog); }
     public Project withCurve(int channel, Curves.Curve curve) {
         var c = new ArrayList<>(List.of(curves.master(), curves.red(), curves.green(), curves.blue()));
         c.set(channel, curve);
-        return new Project(values, new Curves.Channels(c.get(0), c.get(1), c.get(2), c.get(3)), layers);
+        return new Project(values, new Curves.Channels(c.get(0), c.get(1), c.get(2), c.get(3)), layers, fog);
     }
-    public Project withLayers(List<Layer> layers) { return new Project(values, curves, layers); }
+    public Project withLayers(List<Layer> layers) { return new Project(values, curves, layers, fog); }
+
+    public Project withFog(List<Fog> fog) { return new Project(values,curves,layers,fog); }
 
     /** Null context means world data is unavailable: conditioned layers have zero weight. */
     public Atmosphere.Color evaluate(Atmosphere.Color source, double x, double y, Atmosphere.Context context,
@@ -113,8 +212,14 @@ public record Project(Map<String, Double> values, Curves.Channels curves, List<L
                     weight *= Math.min(1, biomeWeight);
                 }
             }
+            if(layer.visualBiomeGroup()!=null)weight*=context!=null&&VisualBiomes.previewMatch(layer.visualBiomeGroup(),context.biome())?1:0;
             if (layer.altitude() != null) weight *= context == null ? 0 : layer.altitude().weight(context.y());
             if (layer.time() != null) weight *= context == null ? 0 : layer.time().weight(context.dayTime());
+            if (layer.weather()!=null) weight *= context==null?0:layer.weather().weight(context);
+            if (layer.lightning()!=null) weight *= context==null?0:Atmosphere.unitWeight(layer.lightning(),context.flash());
+            if(layer.contextControls().active())weight*=context!=null&&layer.contextControls().matches(context.signals())?1:0;
+            if(layer.options().area()!=null)weight*=context==null?0:layer.options().area().weight(context.x(),context.z());
+            if(layer.options().command())weight*=context!=null&&context.commands()?1:0;
             Project p = layer.project();
             Atmosphere.Color graded = p.grade().apply(source, x, y, p.get("opacity"), p.curves());
             result = Atmosphere.blend(result, graded, weight);
@@ -144,7 +249,7 @@ public record Project(Map<String, Double> values, Curves.Channels curves, List<L
     }
     public JsonObject json() {
         JsonObject root = new JsonObject(), state = new JsonObject(), channels = new JsonObject();
-        root.addProperty("format", "shader-maker-project"); root.addProperty("version", 4); root.addProperty("target", "26.3");
+        root.addProperty("format", "shader-maker-project"); root.addProperty("version", layers.stream().anyMatch(l->!l.options().isDefault())?10:layers.stream().anyMatch(l->l.contextControls().active())?9:layers.stream().anyMatch(l->l.visualBiomeGroup()!=null&&l.visualBiomeGroup().startsWith("custom_"))?8:!fog.isEmpty()?7:layers.stream().anyMatch(l->l.visualBiomeGroup()!=null)?6:layers.stream().anyMatch(l->l.weather()!=null||l.lightning()!=null)?5:4); root.addProperty("target", "26.3");
         for (Control c : CONTROLS) state.addProperty(c.key, get(c.key));
         state.addProperty("biome", "");
         int i=0;
@@ -161,25 +266,36 @@ public record Project(Map<String, Double> values, Curves.Channels curves, List<L
             item.addProperty("enabled", layer.enabled()); item.addProperty("strength", layer.strength());
             item.add("grade", layer.project().json().getAsJsonObject("state"));
             JsonArray biomes = new JsonArray(); layer.biomes().stream().sorted().forEach(biomes::add); item.add("biomes", biomes);
+            if(layer.contextControls().active())item.add("contextControls",layer.contextControls().json());
+            if(layer.visualBiomeGroup()!=null)item.addProperty("visualBiomeGroup",layer.visualBiomeGroup());
             if (layer.altitude() != null) {
                 JsonObject a = new JsonObject(); a.addProperty("min",layer.altitude().min()); a.addProperty("max",layer.altitude().max()); a.addProperty("feather",layer.altitude().feather()); item.add("altitude",a);
             }
             if (layer.time() != null) {
                 JsonObject t = new JsonObject(); t.addProperty("start",layer.time().start()); t.addProperty("end",layer.time().end()); t.addProperty("feather",layer.time().feather()); item.add("time",t);
             }
+            if(layer.weather()!=null) {
+                JsonObject w=new JsonObject(); w.add("rain",rangeJson(layer.weather().rain()));w.add("thunder",rangeJson(layer.weather().thunder()));item.add("weather",w);
+            }
+            if(layer.lightning()!=null)item.add("lightning",rangeJson(layer.lightning()));
+            if(layer.options().area()!=null)item.add("area",layer.options().area().json());
+            if(layer.options().command())item.addProperty("command",true);
+            if(layer.options().fadeSeconds()!=1)item.addProperty("fadeSeconds",layer.options().fadeSeconds());
             layerArray.add(item);
         }
-        root.add("layers",layerArray); return root;
+        root.add("layers",layerArray);
+        if(!fog.isEmpty()||root.get("version").getAsInt()>=7){var array=new JsonArray();fog.forEach(f->array.add(f.json()));root.add("fog",array);}
+        return root;
     }
     public String encode() { return new GsonBuilder().setPrettyPrinting().create().toJson(json()) + "\n"; }
     public static Project decode(String text) {
         try {
             JsonObject root = JsonParser.parseString(text).getAsJsonObject();
-            if (!"shader-maker-project".equals(root.get("format").getAsString()) || (!root.getAsJsonPrimitive("version").isNumber() || !Set.of(1.0,2.0,3.0,4.0).contains(root.get("version").getAsDouble()))
+            if (!"shader-maker-project".equals(root.get("format").getAsString()) || (!root.getAsJsonPrimitive("version").isNumber() || !Set.of(1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0).contains(root.get("version").getAsDouble()))
                 || root.has("target") && !"26.3".equals(root.get("target").getAsString()))
                 throw new IllegalArgumentException("Unsupported project format or Minecraft version");
             JsonObject s = root.getAsJsonObject("state");
-            if (root.get("version").getAsDouble() == 4) requireCompleteGrade(s);
+            if (root.get("version").getAsDouble() >= 4) requireCompleteGrade(s);
             // v0.1 is static. Never silently bake or discard a browser project's conditions.
             for (String flag : List.of("altitudeEnabled","timeEnabled","facingEnabled"))
                 if (s.has(flag) && s.get(flag).getAsBoolean()) throw new IllegalArgumentException("Disable context masks in the source project before importing");
@@ -203,7 +319,7 @@ public record Project(Map<String, Double> values, Curves.Channels curves, List<L
                 curves = new Curves.Channels(cc.get(0),cc.get(1),cc.get(2),cc.get(3));
             }
             List<Layer> layers = new ArrayList<>();
-            if (root.get("version").getAsDouble() == 4) {
+            if (root.get("version").getAsDouble() >= 4) {
                 JsonArray array = root.getAsJsonArray("layers");
                 if (array == null) throw new IllegalArgumentException("Missing layers");
                 for (JsonElement element : array) {
@@ -234,13 +350,44 @@ public record Project(Map<String, Double> values, Curves.Channels curves, List<L
                             throw new IllegalArgumentException("Invalid layer name");
                         name = elementName.getAsString();
                     }
-                    layers.add(new Layer(name,grade,enabled.getAsBoolean(),strength,biomes,altitude,time));
+                    Atmosphere.Weather weather=null;Atmosphere.Range lightning=null;
+                    if (root.get("version").getAsDouble()<5 && (item.has("weather")||item.has("lightning")))
+                        throw new IllegalArgumentException("Weather / lightning require project version 5");
+                    if(item.has("weather")){var w=item.getAsJsonObject("weather");weather=new Atmosphere.Weather(readRange(w.getAsJsonObject("rain")),readRange(w.getAsJsonObject("thunder")));}
+                    if(item.has("lightning"))lightning=readRange(item.getAsJsonObject("lightning"));
+                    String visualGroup=null;
+                    if(item.has("visualBiomeGroup")) {
+                        if(root.get("version").getAsDouble()<6||!item.getAsJsonPrimitive("visualBiomeGroup").isString())throw new IllegalArgumentException("Visual groups require project version 6");
+                        visualGroup=item.get("visualBiomeGroup").getAsString();
+                        if(visualGroup.startsWith("custom_")&&root.get("version").getAsDouble()<8)throw new IllegalArgumentException("Custom sky colours require project version 8");
+                    }
+                    var signals=WorldSignals.Controls.NONE;
+                    if(item.has("contextControls")) {
+                        if(root.get("version").getAsDouble()<9)throw new IllegalArgumentException("Render signals require project version 9");
+                        signals=WorldSignals.Controls.read(item.getAsJsonObject("contextControls"));
+                    }
+                    var options=Options.NONE;
+                    if(item.has("area")||item.has("command")||item.has("fadeSeconds")) {
+                        if(root.get("version").getAsDouble()<10)throw new IllegalArgumentException("Area, command and fade options require project version 10");
+                        Area area=item.has("area")?Area.read(item.getAsJsonObject("area")):null;
+                        boolean command=false;
+                        if(item.has("command")){var c=item.getAsJsonPrimitive("command");if(c==null||!c.isBoolean())throw new IllegalArgumentException("Invalid command flag");command=c.getAsBoolean();}
+                        options=new Options(area,command,item.has("fadeSeconds")?requiredNumber(item,"fadeSeconds"):1);
+                    }
+                    layers.add(new Layer(name,grade,enabled.getAsBoolean(),strength,biomes,altitude,time,weather,lightning,visualGroup,signals,options));
                 }
             }
-            return new Project(values,curves,layers);
+            var fog=new ArrayList<Fog>();
+            if(root.has("fog")){if(root.get("version").getAsDouble()<7)throw new IllegalArgumentException("Fog requires project version 7");for(var f:root.getAsJsonArray("fog"))fog.add(Fog.read(f.getAsJsonObject()));}
+            else if(root.get("version").getAsDouble()>=7)throw new IllegalArgumentException("Missing fog objects");
+            return new Project(values,curves,layers,fog);
         } catch (IllegalArgumentException e) { throw e; }
         catch (RuntimeException e) { throw new IllegalArgumentException("Invalid Shader Maker project",e); }
     }
+    private static JsonObject rangeJson(Atmosphere.Range range) {
+        var j=new JsonObject();j.addProperty("min",range.min());j.addProperty("max",range.max());j.addProperty("feather",range.feather());return j;
+    }
+    private static Atmosphere.Range readRange(JsonObject j) {return new Atmosphere.Range(requiredNumber(j,"min"),requiredNumber(j,"max"),requiredNumber(j,"feather"));}
     private static void requireCompleteGrade(JsonObject state) {
         if (state == null) throw new IllegalArgumentException("Missing grade");
         for (Control c : CONTROLS) requiredNumber(state, c.key());

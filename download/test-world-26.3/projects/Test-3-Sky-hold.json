@@ -1,0 +1,130 @@
+{
+  "format": "shader-maker-project",
+  "version": 6,
+  "target": "26.3",
+  "state": {
+    "opacity": 1.0,
+    "exposure": 0.0,
+    "contrast": 1.0,
+    "saturation": 1.0,
+    "vibrance": 0.0,
+    "shoulder": 0.0,
+    "vignette": 0.0,
+    "black": 0.0,
+    "white": 1.0,
+    "gamma": 1.0,
+    "red": 1.0,
+    "green": 1.0,
+    "blue": 1.0,
+    "biome": "",
+    "curves": {
+      "master": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "red": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "green": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "blue": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "name": "Snowy sky",
+      "enabled": true,
+      "strength": 1.0,
+      "grade": {
+        "opacity": 1.0,
+        "exposure": 0.0,
+        "contrast": 1.0,
+        "saturation": 0.3,
+        "vibrance": 0.0,
+        "shoulder": 0.0,
+        "vignette": 0.0,
+        "black": 0.0,
+        "white": 1.0,
+        "gamma": 1.0,
+        "red": 0.75,
+        "green": 1.0,
+        "blue": 1.5,
+        "biome": "",
+        "curves": {
+          "master": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "red": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "green": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "blue": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "biomes": [],
+      "visualBiomeGroup": "sky_7fa1ff"
+    }
+  ]
+}

@@ -6,3 +6,4 @@ out/
 
 logs/
 shots/
+__pycache__/

@@ -1,6 +1,6 @@
 # Vanilla shader feasibility evidence
 
-Investigation: **2026-11-02**, pinned Minecraft Java 26.3. Product requirements live in [the spec](vanilla-only-handoff.md). Source inspection and native compilation below are verified here; **no graphics-device or clean-client probe run was performed in this revision**. The block-scraper status check found no running client. This document does not classify an untested feature as impossible.
+Earlier investigation: **2026-11-02**, pinned Minecraft Java 26.3. See the visual-group implementation follow-up below for newer production code and headless raster results. Product requirements live in [the spec](vanilla-only-handoff.md). Source inspection and native compilation below are verified here; **no graphics-device or clean-client probe run was performed in this revision**. The block-scraper status check found no running client. This document does not classify an untested feature as impossible.
 
 ## Sources and reproducibility
 
@@ -62,6 +62,10 @@ The generator embeds only the uniform definitions needed by post probes and deri
 | `post-fog.zip` | Current post FogColor, opaque output | Compare with terrain fog across biomes, underwater/lava, weather and dimensions. Expected empty black does not mean the world has black fog |
 | `raw-depth.zip` | Raw main-target depth, **not linear distance** | Sky/near/far, water/translucency, hand, view bob, resize and both depth conventions. Far depths may look black; that alone is not failure |
 | `terrain-fog.zip` | Replaces terrain's final surface color with its stage fog color | Compare different biomes, view directions, rain, day/night, underwater and dimensions. This tests world-stage signal availability, not unique biome detection or a finished grade |
+| `lightmap-sky-factor.zip` | Replaces lightmap RGB with clamped SkyFactor | Compare noon, midnight, rain/thunder and lightning with Hide Lightning Flashes on/off; equal values demonstrate ambiguity, not event identity |
+| `lightmap-sky-color.zip` | Replaces lightmap RGB with SkyLightColor | Compare time, weather, dimensions and biome boundaries; test whether candidate signatures collide |
+| `sky-color.zip` | Shows core sky ColorModulator without its final fog operation | Compare sky colors with biome fog/lightmap values, with occlusion and different view directions; no exact biome-ID classifier is implied |
+
 
 Weather, daylight and lightning need further targeted fixtures. Compare clear/rain/thunder, snow/dry biomes, indoor/outdoor, day/night, natural or summoned lightning, the Hide Lightning Flashes toggle, End flashes and multiplayer/dimension changes. A flash detector must not trigger on bright daytime or unrelated brightness changes. Do not infer a clean event signal from the presence of the vanilla lightning geometry shader.
 
@@ -95,3 +99,37 @@ mkdir -p /tmp/shader-maker-probe-check
 Use Java 25 and adjust the cache path if using a separate Gradle cache. No production renderer or conditional-export code changed.
 
 For every graphics test, record client version, backend, GPU/driver, exact probe and pack order, world/dimension, command/input changes, expected versus observed output, screenshots and relevant shader logs. A result in the Fabric development client is useful authoring evidence; repeat it without mods before marking the standalone path verified.
+
+## Layout / condition revision follow-up
+
+Added the three core-stage fixtures above and checked the pinned `EnvironmentAttributes`, `SkyRenderState`, `LightmapRenderState`, `SkyRenderer` and pipeline bytecode. `SUN_ANGLE` and `rainBrightness` reach celestial rendering; the sun's dynamic transform color alpha is the rain-brightness argument. The lightmap's bound fields expose sky factor and color, not an exact camera biome ID or an independent visible-lightning field. The renderer's camera/celestial transforms and the framebuffer are possible transport investigations, not a proven daylight/weather input for a post effect. No production runtime input implementation is claimed.
+
+All **eight** generated diagnostic packs passed the harness: **four** actual post-chain JSON decodes and **20** native ShaderC/SPIR-V fragment checks. Core terrain uses its relevant MULTIDRAW/OIT variants; the lightmap and sky cases use their ordinary core-stage defines, with both depth-range conventions. These checks establish syntax and reflection, not actual device binding, scene coverage, signal uniqueness or cross-stage transport.
+
+A dev-client launch failed before window creation with `Unable to initialize SDL: No available video device`; this environment cannot complete the graphics validation. The user retained the standalone vanilla requirement. Continue with clean-client measurements of these fixtures before exposing those inputs as working exported conditions. Source snapshots and authored conditions remain preserved in the meantime.
+
+## Visual-group implementation follow-up
+
+The user explicitly accepts shared visual signatures and datapack sensitivity, and forbids any client runtime dependency. Exact-ID requirements do not apply to a newly and explicitly chosen visual group; older IDs are still preserved until conversion. This supersedes the earlier exact-ID-only scope discussion.
+
+`VisualBiomes` pins 16 normalized stock `visual/sky_color` signatures and lists every associated stock biome. Contract tests compare every entry against the official cached 26.3 biome JSON. The stock day timeline multiplies sky color by a grey scalar, so normalization retains its hue above the darkness cutoff. Weather, lightning, biome interpolation and custom attributes can alter that hue; black/very dark values and unknown signatures return no match. Pale-garden grey is inherently shared by any matching grey signal. No exact identity, full-night coverage or camera-biome guarantee is implied.
+
+Production output now includes a core sky fragment retaining vanilla RGB/fog, adding a signature byte only to recognized opaque sky alpha. Source inspection confirms `MainTarget` is RGBA8_UNORM, SKY uses the default unblended color target, and the 3D HUD integrates depth without a full-screen color overwrite. The new 1×1 reduction samples the main color/depth pair on a 32×32 grid and requires at least three agreeing samples with a unique winning group. The ordinary ordered grade reads this code; it restores recognized sky alpha to one. The override remains loaded in Command mode before activation and can conflict with other sky/alpha resources. This is an experimental transport, not a guarantee that later overlays preserve every marker.
+
+Verified in this revision: **391** project checks, **16** actual Minecraft post-chain decodes, **22** native ShaderC/SPIR-V cases, and **90** actual raster assertions on surfaceless Mesa llvmpipe 4.5 (Mesa 25.2.8). Raster checks use the production exported shaders with synthetic engine buffers/textures, covering all 16 groups, untouched sky RGB, opaque sky alpha restoration, full-screen grading of non-sky pixels, changed/unknown/dark colors, unmarked stock-looking RGB, tied signals, minimum sample counts, no stale match, and depth occlusion. Synthetic vertex setup is used for the raster fixture; the actual vanilla sky vertex is separately compiled/reflected in native tests.
+
+Reproduce from a populated cache with Java 25 and system Mesa EGL:
+
+```sh
+python3 tools/verify-offline.py --visual-gl
+```
+
+This generates `build/offline/visual-biomes` using `tools/VisualBiomeRenderFixtures.java`, runs `tools/verify-visual-biomes-gl.py`, and packages the authoring JAR. It does not run Minecraft's device pipeline. Gradle is unavailable here because its cache is read-only; the fallback client launch reaches SDL and fails with `No available video device`. UI screenshots, actual Minecraft bindings, clean-client OpenGL/Vulkan activation/removal, overlays, translucency/OIT, water, third person, resize and measured frame cost remain pending. No modless validation is claimed.
+
+## 2026-11-03 terrain fog and Sky colour follow-up
+
+Terrain distance/height/box/sphere density integration and a dedicated Fog workspace now exist. Authored fog follows native fog colour; colour editing is deliberately excluded. Soft height profiles integrate analytically; soft box/sphere edges use a bounded 8/16/32 sample count. Media add optical depth before the retained native fog operation, preserving native alpha/OIT structure. Scene coverage remains explicitly terrain and Auto export only. Animated noise is parked for a future experimental branch; lighting/sunbeams are deliberately excluded.
+
+The condition is now labelled Sky colour. Vanilla biome buttons are colour shortcuts; custom #RRGGBB signals can be supplied by datapacks. The same visible-sky alpha transport is used, with per-project marker allocation when custom hues are active, a 16-hue maximum and explicit rejection of overlapping tolerances. Legacy exact-ID selectors remain preserved until explicit conversion. Fog uses schema v7; custom sky colours v8.
+
+Validation: all existing tests pass, plus **349** fog/sky assertions, **66** total native shader checks (**44** new cases), and **1,205** fog/custom-sky software-raster assertions across **596** camera/ray cases, with **17** actual terrain shader pairs linked and maximum RGB error **1/255** against CPU expectations. The earlier **90** visual-sky raster assertions pass unchanged. These use synthetic Mesa inputs, not a Minecraft device pipeline. Gradle cannot lock its read-only home cache, and the display socket is inaccessible. New UI screenshots, clean-client bindings, actual OIT and hardware performance remain pending. See [the detailed handoff and artifacts](fog-sky-in-game-handoff.md).

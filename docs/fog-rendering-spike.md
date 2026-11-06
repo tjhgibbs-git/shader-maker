@@ -1,6 +1,8 @@
 # Atmosphere feasibility: vanilla resource pack paths
 
-Status: **distance/height fog and volumetric atmosphere are not implemented or verified on a graphics device**. The [product spec](vanilla-only-handoff.md) and [current evidence](vanilla-feasibility.md) replace the earlier mod-renderer proposal.
+Status, 2026-11-03: **terrain distance/height/box/sphere density fog is implemented and software-raster tested; Minecraft device validation is pending**. See the [fog/sky testing handoff](fog-sky-in-game-handoff.md). Animated density is parked for a future experimental branch. Lit fog and sunbeams are deliberately excluded. The [product spec](vanilla-only-handoff.md) and [current evidence](vanilla-feasibility.md) replace the earlier mod-renderer proposal.
+
+The [2026-11-03 research proposal](fog-controls-research.md) records the original investigation. Its broader colour/noise/lighting controls were subsequently scoped down by the user; the implementation/handoff above takes precedence. The older investigation checklist below remains useful for expanding coverage, but its “not implemented” wording is historical.
 
 ## Source-backed paths to investigate
 

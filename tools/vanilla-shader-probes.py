@@ -16,6 +16,8 @@ def generate(client_jar, output):
         globals_glsl = client.read('assets/minecraft/shaders/include/globals.glsl').decode()
         fog_glsl = client.read('assets/minecraft/shaders/include/fog.glsl').decode()
         terrain = client.read('assets/minecraft/shaders/core/terrain.fsh').decode()
+        lightmap = client.read('assets/minecraft/shaders/core/lightmap.fsh').decode()
+        sky = client.read('assets/minecraft/shaders/core/sky.fsh').decode()
     header = '''#version 330
 #extension GL_ARB_separate_shader_objects : require
 uniform sampler2D InSampler;
@@ -63,6 +65,22 @@ layout(location = 0) out vec4 fragColor;
     if terrain.count(old) != 1:
         raise ValueError('26.3 terrain contract changed: expected exactly one final fog operation')
     write('terrain-fog', {'assets/minecraft/shaders/core/terrain.fsh': terrain.replace(old, 'return vec4(fogColor.rgb, color.a);')})
+
+    # Inspect environment signals at their actual core-stage binding. These are
+    # diagnostic outputs, not exact daylight / weather / flash classifiers.
+    lightmap_output = 'fragColor = vec4(color, 1.0);'
+    if lightmap.count(lightmap_output) != 1:
+        raise ValueError('26.3 lightmap contract changed: expected one final color')
+    write('lightmap-sky-factor', {'assets/minecraft/shaders/core/lightmap.fsh': lightmap.replace(lightmap_output,
+        'fragColor = vec4(vec3(clamp(lightmapInfo.SkyFactor, 0.0, 1.0)), 1.0);')})
+    write('lightmap-sky-color', {'assets/minecraft/shaders/core/lightmap.fsh': lightmap.replace(lightmap_output,
+        'fragColor = vec4(clamp(lightmapInfo.SkyLightColor, 0.0, 1.0), 1.0);')})
+    sky_output = 'fragColor = apply_fog(ColorModulator, sphericalVertexDistance, cylindricalVertexDistance, 0.0, FogSkyEnd, FogSkyEnd, FogSkyEnd, FogColor);'
+    if sky.count(sky_output) != 1:
+        raise ValueError('26.3 sky contract changed: expected one final color')
+    write('sky-color', {'assets/minecraft/shaders/core/sky.fsh': sky.replace(sky_output,
+        'fragColor = vec4(ColorModulator.rgb, 1.0);')})
+
 
 
 if __name__ == '__main__':
